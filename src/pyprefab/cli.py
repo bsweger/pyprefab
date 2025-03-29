@@ -7,7 +7,7 @@ from typing import Optional
 
 import structlog
 import typer
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 from rich import print
 from rich.console import Console
 from rich.panel import Panel
@@ -49,12 +49,14 @@ def render_templates(context: dict, templates_dir: Path, target_dir: Path):
         trim_blocks=True,
         lstrip_blocks=True,
         keep_trailing_newline=True,
+        autoescape=select_autoescape(),
     )
     # For rendering path names
     path_env = Environment(
         trim_blocks=True,
         lstrip_blocks=True,
         keep_trailing_newline=True,
+        autoescape=select_autoescape(),
     )
 
     for template_file in templates_dir.rglob('*'):
