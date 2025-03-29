@@ -13,15 +13,16 @@ def main():
     logger.info('starting {{ project_name }}...')
 
     console = Console()
-    console.print(Panel(
-        ':tada: Hello from the {{ project_name }} Python package!',
-        border_style='green',
-        expand=False,
-        padding=(1, 4),
-        subtitle='[italic]created by pyprefab[/italic]',
-        subtitle_align='right',
-        title='{{ project_name }}',
-        title_align='left',
+    console.print(
+        Panel(
+            ':tada: Hello from the {{ project_name }} Python package!',
+            border_style='green',
+            expand=False,
+            padding=(1, 4),
+            subtitle='[italic]created by pyprefab[/italic]',
+            subtitle_align='right',
+            title='{{ project_name }}',
+            title_align='left',
         )
     )
 

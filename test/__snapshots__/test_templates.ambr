@@ -648,15 +648,16 @@
       logger.info('starting transporter_logs...')
   
       console = Console()
-      console.print(Panel(
-          ':tada: Hello from the transporter_logs Python package!',
-          border_style='green',
-          expand=False,
-          padding=(1, 4),
-          subtitle='[italic]created by pyprefab[/italic]',
-          subtitle_align='right',
-          title='transporter_logs',
-          title_align='left',
+      console.print(
+          Panel(
+              ':tada: Hello from the transporter_logs Python package!',
+              border_style='green',
+              expand=False,
+              padding=(1, 4),
+              subtitle='[italic]created by pyprefab[/italic]',
+              subtitle_align='right',
+              title='transporter_logs',
+              title_align='left',
           )
       )
   
