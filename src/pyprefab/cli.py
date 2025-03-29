@@ -14,6 +14,9 @@ from rich.panel import Panel
 from rich.theme import Theme
 from typing_extensions import Annotated
 
+from pyprefab.logging import setup_logging
+
+setup_logging()
 logger = structlog.get_logger()
 
 cli_theme = Theme(
