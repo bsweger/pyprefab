@@ -2,6 +2,9 @@ import structlog
 from rich.console import Console
 from rich.panel import Panel
 
+from {{ project_name }}.logging import setup_logging
+
+setup_logging()
 logger = structlog.get_logger()
 
 

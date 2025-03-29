@@ -625,3 +625,77 @@
   
   '''
 # ---
+# name: test_src_dir
+  '''
+  import sys
+  
+  import structlog
+  
+  
+  def setup_logging():
+      shared_processors = [
+          structlog.processors.TimeStamper(fmt='%Y-%m-%d %H:%M:%S'),
+          structlog.processors.add_log_level,
+      ]
+  
+      if sys.stderr.isatty():
+          # If we're in a terminal, pretty print the logs.
+          processors = shared_processors + [
+              structlog.dev.ConsoleRenderer(),
+          ]  # pragma: no cover
+      else:
+          # Otherwise, output logs in JSON format
+          processors = shared_processors + [
+              structlog.processors.dict_tracebacks,
+              structlog.processors.JSONRenderer(),
+          ]
+  
+      structlog.configure(
+          processors=processors,
+          cache_logger_on_first_use=True,
+      )
+  
+  '''
+# ---
+# name: test_src_dir.1
+  '''
+  """transporter_logs initialization."""
+  
+  '''
+# ---
+# name: test_src_dir.2
+  '''
+  import structlog
+  from rich.console import Console
+  from rich.panel import Panel
+  
+  from transporter_logs.logging import setup_logging
+  
+  setup_logging()
+  logger = structlog.get_logger()
+  
+  
+  def main():
+      """transporter_logs starting point."""
+      logger.info('starting transporter_logs...')
+  
+      console = Console()
+      console.print(Panel(
+          ':tada: Hello from the transporter_logs Python package!',
+          border_style='green',
+          expand=False,
+          padding=(1, 4),
+          subtitle='[italic]created by pyprefab[/italic]',
+          subtitle_align='right',
+          title='transporter_logs',
+          title_align='left',
+          )
+      )
+  
+  
+  if __name__ == '__main__':
+      main()
+  
+  
+  '''
+# ---

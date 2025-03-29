@@ -68,3 +68,13 @@ def test_pyproject_no_docs(cli_output_no_docs, snapshot):
         pyproject = tomllib.load(f)
     assert pyproject.get('dependency-groups', {}).get('docs') is None
     assert pyproject == snapshot
+
+
+def test_src_dir(cli_output, snapshot):
+    """Files in src/ are correct."""
+    project_path, cli_result = cli_output
+    src_dir = project_path / 'src' / 'transporter_logs'
+    for src_file in src_dir.iterdir():
+        with open(src_file, 'r', encoding='utf-8') as f:
+            file = f.read()
+        assert file == snapshot
