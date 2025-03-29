@@ -35,7 +35,7 @@ jobs:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@4db96194c378173c656ce18a155ffc14a9fc4355  # v5.2.2
+        uses: astral-sh/setup-uv@22695119d769bdb6f7032ad67b9bca0ef8c4a174 #v5.4.0
 
       - name: Build Sphinx docs 🗿
         shell: bash
