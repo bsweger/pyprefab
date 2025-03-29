@@ -128,6 +128,16 @@ The [`uv add`](https://docs.astral.sh/uv/reference/cli/#uv-add) command will:
 
 Make sure to commit the updated versions of `pyproject.toml` and `uv.lock`.
 
+### Updating snapshot tests
+
+This project uses [`syrupy`](https://github.com/syrupy-project/syrupy) to run snapshot tests against the output of pyprefab's templates.
+
+If you've added a new pyprefab template, add a test snapshot test for it in `test_templates.py`. Then, instruct syrupy to generate a snapshot for the new template:
+
+```bash
+uv run pytest --snapshot-update
+```
+
 ### Submitting code changes
 
 After you've completed the changes described in the issue you're working on,
