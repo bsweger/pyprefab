@@ -58,6 +58,7 @@ with the following files in `trek/code/holodeck`:
 ├── src
 │   └── holodeck
 │       ├── __init__.py
+│       ├── __main__.py
 │       └── app.py
 └── test
     └── test_app.py
@@ -103,6 +104,7 @@ with the new package.
 ├── src
 │   └── holodeck
 │       ├── __init__.py
+│       ├── __main__.py
 │       └── app.py
 └── test
     └── test_app.py
