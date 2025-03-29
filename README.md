@@ -5,6 +5,8 @@ for a fully-functional, modern Python package. The goal of pyprefab is to get
 you straight to writing application code by handling project startup tasks
 like logging setup and creating a test harness.
 
+![pyprefab demo](https://raw.githubusercontent.com/bsweger/pyprefab/main/docs/source/_static/pyprefab-demo.gif)
+
 The scaffolding includes:
 
 - project files in the [src layout](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/) format
