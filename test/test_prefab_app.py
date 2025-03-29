@@ -31,7 +31,7 @@ def test_logging(cli_output):
     with open(module_path / 'log_test.py', 'w', encoding='utf-8') as f:
         f.write('from transporter_logs import app\n')
         f.write('app.logger.info("log test")\n')
-    
+
     result = subprocess.run(['python', 'log_test.py'], capture_output=True, cwd=module_path, text=True)
     logs = ast.literal_eval(result.stdout)
     assert logs.get('event').lower() == 'log test'

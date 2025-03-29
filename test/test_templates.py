@@ -70,11 +70,17 @@ def test_pyproject_no_docs(cli_output_no_docs, snapshot):
     assert pyproject == snapshot
 
 
-def test_src_dir(cli_output, snapshot):
+@pytest.mark.parametrize(
+    'src_file',
+    [
+        '__init__.py',
+        'app.py',
+        'logging.py',
+    ],
+)
+def test_src_dir(cli_output, snapshot, src_file):
     """Files in src/ are correct."""
     project_path, cli_result = cli_output
-    src_dir = project_path / 'src' / 'transporter_logs'
-    for src_file in src_dir.iterdir():
-        with open(src_file, 'r', encoding='utf-8') as f:
-            file = f.read()
-        assert file == snapshot
+    with open(project_path / 'src' / 'transporter_logs' / src_file, 'r', encoding='utf-8') as f:
+        file = f.read()
+    assert file == snapshot
