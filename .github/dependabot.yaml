@@ -19,13 +19,7 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    groups:
-      py-updates:
-        applies-to: version-updates
-        update-types:
-          - patch
-          - minor
-    ignore:
-      - dependency-name: "jinja2"
+    # ignore:
+    #   - dependency-name: "jinja2"
 
 
