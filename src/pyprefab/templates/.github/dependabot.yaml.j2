@@ -1,0 +1,28 @@
+# instruct GitHub dependabot to scan project dependencies for updates
+
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    # dependabot automatically checks .github/workflows/ and .github/actions/
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      gha-updates:
+        applies-to: version-updates
+        update-types:
+          - patch
+          - minor
+
+  - package-ecosystem: "uv"
+    # Location of `uv.lock` and/or `pyproject.toml`
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+        py-updates:
+          applies-to: version-updates
+          update-types:
+            - patch
+            - minor
+
