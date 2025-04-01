@@ -29,6 +29,10 @@ jobs:
   build:
     name: Build distribution 📦
     runs-on: ubuntu-latest
+    outputs:
+      # set publish_to_pypi = true to publish to PyPI after
+      # tagging a release (requires trusted publisher setup on PyPI)
+      publish_to_pypi: false
 
     steps:
       - name: Checkout 🛎️
@@ -60,6 +64,7 @@ jobs:
     needs:
     - build
     runs-on: ubuntu-latest
+    if: ${{ '{{' }} needs.build.outputs.publish_to_pypi == 'true' {{ '}}' }}
     environment:
       name: pypi
       url: https://pypi.org/p/{{ project_name }}

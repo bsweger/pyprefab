@@ -30,6 +30,10 @@ jobs:
   build:
     name: Build distribution 📦
     runs-on: ubuntu-latest
+    outputs:
+      # set publish_to_testpypi = true to publish to test PyPI after
+      # pushing to main (requires trusted publisher setup on test PyPI)
+      publish_to_testpypi: false
 
     steps:
       - name: Checkout 🛎️
@@ -61,6 +65,7 @@ jobs:
     needs:
     - build
     runs-on: ubuntu-latest
+    if: ${{ '{{' }} needs.build.outputs.publish_to_testpypi == 'true' {{ '}}' }}
     environment:
       name: pypi-test
       url: https://test.pypi.org/p/{{ project_name }}
