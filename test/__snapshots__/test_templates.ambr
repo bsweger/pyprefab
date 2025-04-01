@@ -670,8 +670,8 @@
       name: Build distribution 📦
       runs-on: ubuntu-latest
       outputs:
-        # set publish_to_pypi = true to publish to test PyPI after
-        # pushing to main (requires trusted publisher setup on test PyPI)
+        # set publish_to_pypi = true to publish to PyPI after
+        # tagging a release (requires trusted publisher setup on PyPI)
         publish_to_pypi: false
   
       steps:
