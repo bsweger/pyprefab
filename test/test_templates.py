@@ -32,7 +32,7 @@ def test_contributing(cli_output, snapshot):
         'index.rst',
         'CHANGELOG.md',
         'CONTRIBUTING.md',
-        'README.md',
+        'readme.md',
         'usage.md',
     ],
 )

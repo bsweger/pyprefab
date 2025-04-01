@@ -177,13 +177,6 @@
   
   '''
 # ---
-# name: test_docs_dir[README.md]
-  '''
-  ```{include} ../../README.md
-  ```
-  
-  '''
-# ---
 # name: test_docs_dir[conf.py]
   '''
   # Configuration file for the Sphinx documentation builder.
@@ -418,6 +411,13 @@
   
   .. include:: readme.md
      :parser: myst_parser.sphinx_
+  '''
+# ---
+# name: test_docs_dir[readme.md]
+  '''
+  ```{include} ../../README.md
+  ```
+  
   '''
 # ---
 # name: test_docs_dir[usage.md]
