@@ -79,8 +79,24 @@ def test_pyproject_no_docs(cli_output_no_docs, snapshot):
     ],
 )
 def test_src_dir(cli_output, snapshot, src_file):
-    """Files in src/ are correct."""
+    """Template files in src/ rendered correctly."""
     project_path, cli_result = cli_output
     with open(project_path / 'src' / 'transporter_logs' / src_file, 'r', encoding='utf-8') as f:
+        file = f.read()
+    assert file == snapshot
+
+
+@pytest.mark.parametrize(
+    'gh_workflow_file',
+    [
+        'ci.yaml',
+        'publish-pypi-test.yaml',
+        'publish-pypi.yaml',
+    ],
+)
+def test_gh_workflows(cli_output, snapshot, gh_workflow_file):
+    """Github workflow templates rendered correctly."""
+    project_path, cli_result = cli_output
+    with open(project_path / '.github' / 'workflows' / gh_workflow_file, 'r', encoding='utf-8') as f:
         file = f.read()
     assert file == snapshot
