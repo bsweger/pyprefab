@@ -5,6 +5,14 @@ All notable changes to `pyprefab` are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com), and the
 project uses [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+
+### Changed
+
+- Allow package creation in directories that already contain a `.git` folder
+  (to prevent inadvertent overwriting, pyprefab will not create a package in
+  a directory with existing content aside from `.git/`)
+
 ## 0.5.4
 
 ### Added

@@ -78,3 +78,34 @@ def test_error_existing_data(tmp_path):
         input='y\n',
     )
     assert result.exit_code != 0
+
+
+def test_existing_data_exception(tmp_path):
+    """If existing files in project directory are on the exception list, pyprefab should create the package."""
+
+    project_dir = tmp_path / 'test_existing_data'
+    (project_dir / '.git').mkdir(parents=True, exist_ok=True)
+
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        ['--name', 'pytest_project', '--author', 'Py Test', '--description', 'new project', '--dir', project_dir],
+        input='y\n',
+    )
+    assert result.exit_code == 0
+
+
+def test_existing_data_exception_and_no_exception(tmp_path):
+    """If there's a mix of allowed and not allowed existing files in project directory, pyprefab should fail."""
+
+    project_dir = tmp_path / 'test_existing_data'
+    (project_dir / '.git').mkdir(parents=True, exist_ok=True)
+    (project_dir / 'logs').mkdir(parents=True, exist_ok=True)
+
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        ['--name', 'pytest_project', '--author', 'Py Test', '--description', 'new project', '--dir', project_dir],
+        input='y\n',
+    )
+    assert result.exit_code != 0

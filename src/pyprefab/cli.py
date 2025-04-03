@@ -137,7 +137,12 @@ def main(
         )
         raise typer.Exit(1)
 
-    if project_dir.exists() and any(project_dir.iterdir()):
+    # If there is already content in the project directory, exit (unless
+    # the directory is on the exception list below)
+    allow_existing = ['.git']
+    exceptions = [allow for allow in allow_existing if (project_dir / allow).is_dir()]
+
+    if project_dir.exists() and sum(1 for item in project_dir.iterdir()) - len(exceptions) > 0:
         err_console = Console(stderr=True)
         err_console.print(
             Panel.fit(
