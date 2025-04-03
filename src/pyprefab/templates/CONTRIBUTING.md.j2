@@ -122,6 +122,22 @@ The [`uv add`](https://docs.astral.sh/uv/reference/cli/#uv-add) command will:
 
 Make sure to commit the updated versions of `pyproject.toml` and `uv.lock`.
 
+### Updating documentation
+
+This project uses [Sphinx](https://www.sphinx-doc.org/en/master/) and
+[MyST-flavored markdown](https://myst-parser.readthedocs.io/en/latest/index.html)
+for documentation.
+
+Documentation updates should be made in `docs/source`. To preview
+changes:
+
+```bash
+uv run --group docs sphinx-autobuild docs/source docs/_build/html
+```
+
+The output of the above command provides a URL for viewing the documentation via a
+local server (usually [http://127.0.0.1:8000](http://127.0.0.1:8000)).
+
 ### Submitting code changes
 
 After you've completed the changes described in the issue you're working on,

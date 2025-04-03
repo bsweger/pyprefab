@@ -7,11 +7,16 @@ project uses [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Added
+
+- `.python-version` template for a more explicit uv experience
+
 ### Changed
 
 - Allow package creation in directories that already contain a `.git` folder
   (to prevent inadvertent overwriting, pyprefab will not create a package in
   a directory with existing content aside from `.git/`)
+- Include a note about Sphinx documentation preview on CONTRIBUTING.md.
 
 ## 0.5.4
 
