@@ -43,9 +43,9 @@ docs = [
 pyprefab = "pyprefab.cli:app"
 
 [project.urls]
-Documentation = "https://bsweger.github.io/pyprefab/index.html"
-Repository = "https://github.com/bsweger/pyprefab.git"
-Changelog = "https://github.com/bsweger/pyprefab/blob/main/CHANGELOG.md"
+Documentation = "https://reichlab.github.io/pyprefab/index.html"
+Repository = "https://github.com/reichlab/pyprefab.git"
+Changelog = "https://github.com/reichlab/pyprefab/blob/main/CHANGELOG.md"
 
 [build-system]
 # Minimum requirements for the build system to execute.

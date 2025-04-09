@@ -5,7 +5,7 @@ for a fully-functional, modern Python package. The goal of pyprefab is to get
 you straight to writing application code by handling project startup tasks
 like logging setup and creating a test harness.
 
-![pyprefab demo](https://raw.githubusercontent.com/bsweger/pyprefab/main/docs/source/_static/pyprefab-demo.gif)
+![pyprefab demo](https://raw.githubusercontent.com/reichlab/pyprefab/main/docs/source/_static/pyprefab-demo.gif)
 
 The scaffolding includes:
 

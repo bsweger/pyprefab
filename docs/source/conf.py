@@ -50,8 +50,8 @@ copybutton_here_doc_delimiter = 'EOT'
 copybutton_selector = 'div:not(.no-copybutton) > div.highlight > pre'
 
 # Open graph settings
-ogp_site_url = 'https://bsweger.github.io/pyprefab/'
-ogp_image = 'https://bsweger.github.io/pyprefab/_static/pyprefab.png'
+ogp_site_url = 'https://reichlab.github.io/pyprefab/'
+ogp_image = 'https://reichlab.github.io/pyprefab/_static/pyprefab.png'
 
 templates_path = ['_templates']
 exclude_patterns = []
@@ -69,8 +69,8 @@ master_doc = 'index'
 # project information
 now = datetime.now()
 project = 'pyprefab'
-copyright = f'{now.year}, Becky Sweger | Last update {now.strftime("%B %d, %Y")}'
-author = 'Becky Sweger'
+copyright = f'{now.year}, Reich Lab @ University of Massachusetts Amherst | Last update {now.strftime("%B %d, %Y")}'
+author = 'Reich Lab @ University of Massachusetts Amherst'
 
 version = metadata.version('pyprefab')
 release = version
@@ -103,7 +103,7 @@ html_theme_options = {
     # 'logo': 'beepboop.png',
     # 'logo_name': True,
     'description': f'Simple CLI for Python project scaffolding\n{release}',
-    'github_user': 'bsweger',
+    'github_user': 'reichlab',
     'github_repo': 'pyprefab',
     'github_banner': True,
     'github_button': False,
