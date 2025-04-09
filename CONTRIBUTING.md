@@ -49,7 +49,7 @@ already have a preferred Python toolset, that should work too)
 repository:
 
     ```sh
-    git remote add upstream https://github.com/reichlab/pyprefab.git
+    git remote add upstream https://github.com/bsweger/pyprefab.git
     git fetch upstream
     ```
 
