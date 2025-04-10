@@ -13,6 +13,7 @@ def test_build(cli_output):
         ['python', '-m', 'build', '--sdist', '--wheel'], capture_output=True, cwd=package_path, text=True
     )
     assert result.returncode == 0
+    assert 'deprecationwarning' not in result.stdout.lower()
 
 
 def test_lint(cli_output):

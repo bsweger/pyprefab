@@ -820,9 +820,7 @@
       'dynamic': list([
         'version',
       ]),
-      'license': dict({
-        'text': 'MIT License',
-      }),
+      'license': 'MIT',
       'maintainers': list([
         dict({
           'name': "Miles O'Brien",
@@ -911,9 +909,7 @@
       'dynamic': list([
         'version',
       ]),
-      'license': dict({
-        'text': 'MIT License',
-      }),
+      'license': 'MIT',
       'maintainers': list([
         dict({
           'name': "Miles O'Brien",

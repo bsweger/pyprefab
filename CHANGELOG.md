@@ -95,6 +95,7 @@ project uses [Semantic Versioning](https://semver.org/).
 ### Fixed
 
 - Correct CLI example on README.md
+- Fix pyproject.license build deprecation warning in pyproject.toml template
 
 ## 0.3.2
 
