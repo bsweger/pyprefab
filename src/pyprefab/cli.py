@@ -31,13 +31,13 @@ cli_theme = Theme(
 console = Console(theme=cli_theme)
 app = typer.Typer(
     add_completion=False,
-    help='Generate python project scaffolding based on pyprefab.',
+    help='Generate python package scaffolding based on pyprefab.',
     rich_markup_mode='rich',
 )
 
 
-def validate_project_name(name: str) -> bool:
-    """Validate project name follows Python package naming conventions."""
+def validate_package_name(name: str) -> bool:
+    """Validate package name follows Python package naming conventions."""
     return name.isidentifier() and name.islower()
 
 
@@ -88,31 +88,31 @@ def main(
     name: Annotated[
         Optional[str],
         typer.Option(
-            help='Name of the project',
-            prompt=typer.style('Project name 🐍', fg=typer.colors.MAGENTA, bold=True),
+            help='Name of the package',
+            prompt=typer.style('Package name 🐍', fg=typer.colors.MAGENTA, bold=True),
             show_default=False,
         ),
     ],
     author: Annotated[
         Optional[str],
         typer.Option(
-            help='Project author',
-            prompt=typer.style('Project author 👤', fg=typer.colors.MAGENTA, bold=True),
+            help='Package author',
+            prompt=typer.style('Package author 👤', fg=typer.colors.MAGENTA, bold=True),
         ),
     ] = 'None',
     description: Annotated[
         Optional[str],
         typer.Option(
-            help='Project description',
-            prompt=typer.style('Project description 📝', fg=typer.colors.MAGENTA, bold=True),
+            help='Package description',
+            prompt=typer.style('Package description 📝', fg=typer.colors.MAGENTA, bold=True),
         ),
     ] = 'None',
-    project_dir: Annotated[
+    package_dir: Annotated[
         Path,
         typer.Option(
             '--dir',
-            help='Directory that will contain the project',
-            prompt=typer.style('Project directory 🎬', fg=typer.colors.MAGENTA, bold=True),
+            help='Directory that will contain the package',
+            prompt=typer.style('Package directory 🎬', fg=typer.colors.MAGENTA, bold=True),
         ),
     ] = Path.cwd(),
     docs: Annotated[
@@ -126,7 +126,7 @@ def main(
     """
     🐍 Create Python package boilerplate 🐍
     """
-    if not validate_project_name(name):
+    if not validate_package_name(name):
         err_console = Console(stderr=True)
         err_console.print(
             Panel.fit(
@@ -137,16 +137,16 @@ def main(
         )
         raise typer.Exit(1)
 
-    # If there is already content in the project directory, exit (unless
+    # If there is already content in the package directory, exit (unless
     # the directory is on the exception list below)
     allow_existing = ['.git']
-    exceptions = [allow for allow in allow_existing if (project_dir / allow).is_dir()]
+    exceptions = [allow for allow in allow_existing if (package_dir / allow).is_dir()]
 
-    if project_dir.exists() and sum(1 for item in project_dir.iterdir()) - len(exceptions) > 0:
+    if package_dir.exists() and sum(1 for item in package_dir.iterdir()) - len(exceptions) > 0:
         err_console = Console(stderr=True)
         err_console.print(
             Panel.fit(
-                f'⛔️ Package not created: {str(project_dir)} is not an empty directory',
+                f'⛔️ Package not created: {str(package_dir)} is not an empty directory',
                 title='pyprefab error',
                 border_style='red',
             )
@@ -154,24 +154,23 @@ def main(
         raise typer.Exit(1)
 
     templates_dir = Path(__file__).parent / 'templates'
-    target_dir = project_dir or Path.cwd() / name
+    target_dir = package_dir or Path.cwd() / name
 
     try:
-        # Create project directory
+        # Create package directory
         target_dir.mkdir(parents=True, exist_ok=True)
-
         # Template context
         context = {
-            'project_name': name,
+            'package_name': name,
             'author': author,
             'description': description,
             'docs': docs,
         }
 
-        # Write Jinja templates to project directory
+        # Write Jinja templates to package directory
         render_templates(context, templates_dir, target_dir)
         panel_msg = (
-            f'✨ Created new project [bold green]{name}[/] in {target_dir}\n'
+            f'✨ Created new package [bold green]{name}[/] in {target_dir}\n'
             f'Author: [blue]{author}[/]\n'
             f'Description: {description}'
         )
@@ -180,7 +179,7 @@ def main(
         print(
             Panel.fit(
                 panel_msg,
-                title='Project Created Successfully',
+                title='Package Created Successfully',
                 border_style='green',
             )
         )
@@ -189,12 +188,12 @@ def main(
         err_console = Console(stderr=True)
         err_console.print(
             Panel.fit(
-                f'⛔️ Error creating project: {str(e)}',
+                f'⛔️ Error creating package: {str(e)}',
                 title='pyprefab error',
                 border_style='red',
             )
         )
-        typer.secho(f'Error creating project: {str(e)}', fg=typer.colors.RED)
+        typer.secho(f'Error creating package: {str(e)}', fg=typer.colors.RED)
         if target_dir.exists():
             shutil.rmtree(target_dir)
         raise typer.Exit(1)

@@ -1,27 +1,26 @@
 import structlog
 from rich.console import Console
 from rich.panel import Panel
-
-from {{ project_name }}.logging import setup_logging
+from {{ package_name }}.logging import setup_logging
 
 setup_logging()
 logger = structlog.get_logger()
 
 
 def main():
-    """{{ project_name }} starting point."""
-    logger.info('starting {{ project_name }}...')
+    """{{ package_name }} starting point."""
+    logger.info('starting {{ package_name }}...')
 
     console = Console()
     console.print(
         Panel(
-            ':tada: Hello from the {{ project_name }} Python package!',
+            ':tada: Hello from the {{ package_name }} Python package!',
             border_style='green',
             expand=False,
             padding=(1, 4),
             subtitle='[italic]created by pyprefab[/italic]',
             subtitle_align='right',
-            title='{{ project_name }}',
+            title='{{ package_name }}',
             title_align='left',
         )
     )

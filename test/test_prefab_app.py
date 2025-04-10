@@ -6,28 +6,28 @@ import subprocess
 
 def test_build(cli_output):
     """Files created should build a valid python package."""
-    project_path, cli_result = cli_output
+    package_path, cli_result = cli_output
 
     # pyprefab output should be a valid Python package
     result = subprocess.run(
-        ['python', '-m', 'build', '--sdist', '--wheel'], capture_output=True, cwd=project_path, text=True
+        ['python', '-m', 'build', '--sdist', '--wheel'], capture_output=True, cwd=package_path, text=True
     )
     assert result.returncode == 0
 
 
 def test_lint(cli_output):
     """Files created by CLI should lint without errors."""
-    project_path, cli_result = cli_output
+    package_path, cli_result = cli_output
 
-    result = subprocess.run(['ruff', 'check', project_path], capture_output=True, text=True)
+    result = subprocess.run(['ruff', 'check', package_path], capture_output=True, text=True)
     assert result.returncode == 0
 
 
 def test_logging(cli_output):
     """Generated Python package should have functional logging."""
-    project_path, cli_result = cli_output
+    package_path, cli_result = cli_output
 
-    module_path = project_path / 'src'
+    module_path = package_path / 'src'
     with open(module_path / 'log_test.py', 'w', encoding='utf-8') as f:
         f.write('from transporter_logs import app\n')
         f.write('app.logger.info("log test")\n')

@@ -1,5 +1,5 @@
 [project]
-name = "{{ project_name }}"
+name = "{{ package_name }}"
 dynamic = ['version']
 description = "{{ description | replace('"', '\\"') }}"
 authors = [{name = "{{ author| replace('"', '\\"') }}"}]
@@ -33,7 +33,7 @@ docs = [
 {% endif %}
 
 [project.scripts]
-{{ project_name }} = '{{ project_name }}.app:main'
+{{ package_name }} = '{{ package_name }}.app:main'
 
 [project.urls]
 

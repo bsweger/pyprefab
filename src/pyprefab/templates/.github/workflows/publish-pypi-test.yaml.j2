@@ -68,7 +68,7 @@ jobs:
     if: ${{ '{{' }} needs.build.outputs.publish_to_testpypi == 'true' {{ '}}' }}
     environment:
       name: pypi-test
-      url: https://test.pypi.org/p/{{ project_name }}
+      url: https://test.pypi.org/p/{{ package_name }}
     permissions:
        id-token: write  # needed for trusted publishing (i.e., OIDC)
 

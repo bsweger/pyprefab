@@ -13,10 +13,10 @@ Usage: pyprefab [OPTIONS] NAME
 🐍 Create Python package boilerplate 🐍
 
 ╭─ Options ───────────────────────────────────────────────────────────────────────────────╮
-│ *  --name         TEXT  Name of the project [required]                                  │
-│    --author       TEXT  Project author [default: None]                                  │
-│    --description  TEXT  Project description [default: None]                             │
-│    --dir          PATH  Directory that will contain the project [default: <current dir>]│
+│ *  --name         TEXT  Name of the package [required]                                  │
+│    --author       TEXT  Package author [default: None]                                  │
+│    --description  TEXT  Package description [default: None]                             │
+│    --dir          PATH  Directory that will contain the package [default: <current dir>]│
 │    --docs    --no-docs  Include Sphinx documentation files [default: no-docs]           │
 │    --help               Show this message and exit.                                     │
 ╰─────────────────────────────────────────────────────────────────────────────────────────╯
@@ -32,8 +32,8 @@ To create a Python package named `holodeck` in a directory named
 >>> --description "personal holodeck programs" \
 >>> --dir trek/code/holodeck
 
-╭────────────── Project Created Successfully ────────────────╮
-│ Created new project holodeck in trek/code/holodeck         │
+╭────────────── Package Created Successfully ────────────────╮
+│ Created new package holodeck in trek/code/holodeck         │
 │ Author: rbarclay                                           │
 │ Description: personal holodeck programs                    │
 ╰────────────────────────────────────────────────────────────╯
@@ -64,7 +64,7 @@ with the following files in `trek/code/holodeck`:
     └── test_app.py
 ```
 
-### Optional project documentation
+### Optional package documentation
 
 Pass the `--docs` option to pyprefab to include Sphinx-based documentation files
 with the new package.
@@ -116,13 +116,13 @@ If you don't explicitly specify options, pyprefab will prompt for them:
 
 ```sh
 >>> pyprefab
-Project name 🐍: holodeck
-Project author 👤 [None]: rbarclay
-Project description 📝 [None]: personal holodeck programs
-Project directory 🎬 [/Users/rbarclay/code/holodeck]:
+Package name 🐍: holodeck
+Package author 👤 [None]: rbarclay
+Package description 📝 [None]: personal holodeck programs
+Package directory 🎬 [/Users/rbarclay/code/holodeck]:
 Include Sphinx docs? 📄 [y/N]: y
-╭───────────────── Project Created Successfully ──────────────╮
-│ Created new project holodeck in /Users/rbarclay/holode      │
+╭───────────────── Package Created Successfully ──────────────╮
+│ Created new package holodeck in /Users/rbarclay/holode      │
 │ Author: rbarclay                                            │
 │ Description: personal holodeck programs                     │
 │ Documentation: /Users/rbarclay/holodeck/docs                │
