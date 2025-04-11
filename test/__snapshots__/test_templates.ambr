@@ -971,6 +971,11 @@
   
   An app for parsin' "transporter logs"
   
+  ## Project setup
+  
+  See [CONTRIBUTING.md](CONTRIBUTING.md) for instructions on setting up a
+  development environment for transporter_logs.
+  
   '''
 # ---
 # name: test_src_dir[__init__.py]

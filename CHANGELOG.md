@@ -91,6 +91,7 @@ project uses [Semantic Versioning](https://semver.org/).
 - `--directory` option renamed to `--dir`
 - Prompt user when specified project directory is not empty
 - List created package components on README.md
+- Add a link to CONTRIBUTING.md in the README.md template
 
 ### Fixed
 
