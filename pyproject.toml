@@ -1,12 +1,14 @@
 [project]
 name = 'pyprefab'
 description = 'Python application template for personal use'
-license = {text = 'MIT License'}
+authors = [
+    {name = "Becky Sweger", email = "bsweger@gmail.com"},
+]
+license = "MIT"
 readme = 'README.md'
 requires-python = '>=3.9,<3.14'
 classifiers = [
     'Programming Language :: Python :: 3',
-    'License :: OSI Approved :: MIT License',
 ]
 dynamic = ['version']
 

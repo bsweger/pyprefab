@@ -9,7 +9,7 @@ like logging setup and creating a test harness.
 
 The scaffolding includes:
 
-- project files in the [src layout](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/) format
+- package files in the [src layout](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/) format
 - `pyproject.toml` with [dependency groups](https://packaging.python.org/en/latest/specifications/dependency-groups/#dependency-groups)
 - `CHANGELOG.md`, `CONTRIBUTING.md`, `.gitignore`, and `README.md`
 - automated package versioning with [setuptools-scm](https://pypi.org/project/setuptools-scm/)

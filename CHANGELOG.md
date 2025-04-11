@@ -10,6 +10,7 @@ project uses [Semantic Versioning](https://semver.org/).
 ### Added
 
 - `.python-version` template for a more explicit uv experience
+- New `LICENSE` template
 
 ### Changed
 
@@ -91,10 +92,12 @@ project uses [Semantic Versioning](https://semver.org/).
 - `--directory` option renamed to `--dir`
 - Prompt user when specified project directory is not empty
 - List created package components on README.md
+- Add a link to CONTRIBUTING.md in the README.md template
 
 ### Fixed
 
 - Correct CLI example on README.md
+- Fix pyproject.license build deprecation warning in pyproject.toml template
 
 ## 0.3.2
 
