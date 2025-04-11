@@ -10,6 +10,7 @@ project uses [Semantic Versioning](https://semver.org/).
 ### Added
 
 - `.python-version` template for a more explicit uv experience
+- New `LICENSE` template
 
 ### Changed
 

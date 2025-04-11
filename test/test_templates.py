@@ -9,20 +9,30 @@ except ModuleNotFoundError:
     import tomli as tomllib  # type: ignore
 
 
-def test_changelog(cli_output, snapshot):
-    """Location and contents of CHANGELOG.md are correct."""
+def test_pyproject_docs(cli_output, snapshot):
+    """pyproject.toml contents are correct for project with docs."""
     package_path, cli_result = cli_output
-    with open(package_path / 'CHANGELOG.md', 'r', encoding='utf-8') as f:
-        changelog = f.read()
-    assert changelog == snapshot
+    with open(package_path / 'pyproject.toml', 'rb') as f:
+        pyproject = tomllib.load(f)
+    assert pyproject.get('dependency-groups', {}).get('docs')
+    assert pyproject == snapshot
 
 
-def test_contributing(cli_output, snapshot):
+@pytest.mark.parametrize(
+    'meta_file',
+    [
+        'CHANGELOG.md',
+        'CONTRIBUTING.md',
+        'LICENSE',
+        'README.md',
+    ],
+)
+def test_meta_files(cli_output, snapshot, meta_file):
     """Location and contents of CHANGELOG.md are correct."""
     package_path, cli_result = cli_output
-    with open(package_path / 'CONTRIBUTING.md', 'r', encoding='utf-8') as f:
-        contributing = f.read()
-    assert contributing == snapshot
+    with open(package_path / meta_file, 'r', encoding='utf-8') as f:
+        file_contents = f.read()
+    assert file_contents == snapshot
 
 
 @pytest.mark.parametrize(
@@ -42,23 +52,6 @@ def test_docs_dir(cli_output, snapshot, docs_file):
     with open(package_path / 'docs' / 'source' / docs_file, 'r', encoding='utf-8') as f:
         file = f.read()
     assert file == snapshot
-
-
-def test_readme(cli_output, snapshot):
-    """README.md contents are correct."""
-    package_path, cli_result = cli_output
-    with open(package_path / 'README.md', 'r', encoding='utf-8') as f:
-        readme = f.read()
-    assert readme == snapshot
-
-
-def test_pyproject_docs(cli_output, snapshot):
-    """pyproject.toml contents are correct for project with docs."""
-    package_path, cli_result = cli_output
-    with open(package_path / 'pyproject.toml', 'rb') as f:
-        pyproject = tomllib.load(f)
-    assert pyproject.get('dependency-groups', {}).get('docs')
-    assert pyproject == snapshot
 
 
 def test_pyproject_no_docs(cli_output_no_docs, snapshot):

@@ -2,6 +2,7 @@
 
 import shutil
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
@@ -156,15 +157,18 @@ def main(
     templates_dir = Path(__file__).parent / 'templates'
     target_dir = package_dir or Path.cwd() / name
 
+    current_year = datetime.now().year
+
     try:
         # Create package directory
         target_dir.mkdir(parents=True, exist_ok=True)
         # Template context
         context = {
-            'package_name': name,
             'author': author,
+            'current_year': current_year,
             'description': description,
             'docs': docs,
+            'package_name': name,
         }
 
         # Write Jinja templates to package directory
