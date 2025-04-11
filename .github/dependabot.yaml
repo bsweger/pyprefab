@@ -19,7 +19,16 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    # ignore:
-    #   - dependency-name: "jinja2"
+    ignore:
+      - dependency-name: "jinja2"
+    allow:
+      - dependency-type: "all"
+    # group all run-of-the mill updates into a single pull request
+    groups:
+      py-updates:
+        applies-to: version-updates
+        update-types:
+          - patch
+          - minor
 
 
