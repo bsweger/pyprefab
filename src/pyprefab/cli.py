@@ -39,7 +39,14 @@ app = typer.Typer(
 
 def validate_package_name(name: str) -> bool:
     """Validate package name follows Python package naming conventions."""
-    return name.isidentifier() and name.islower()
+    if name.isidentifier():
+        return name
+    else:
+        raise typer.BadParameter(
+            f'{name} is not a valid Python package name.\n'
+            'Package names can contain letters, numbers, and underscores. They cannot start with a number.\n'
+            'See https://docs.python.org/3/reference/lexical_analysis.html#identifiers for more information.'
+        )
 
 
 def render_templates(context: dict, templates_dir: Path, target_dir: Path):
@@ -91,6 +98,7 @@ def main(
         typer.Option(
             help='Name of the package',
             prompt=typer.style('Package name 🐍', fg=typer.colors.MAGENTA, bold=True),
+            callback=validate_package_name,
             show_default=False,
         ),
     ],
@@ -127,17 +135,6 @@ def main(
     """
     🐍 Create Python package boilerplate 🐍
     """
-    if not validate_package_name(name):
-        err_console = Console(stderr=True)
-        err_console.print(
-            Panel.fit(
-                f'⛔️ Package not created: {name} is not a valid Python package name',
-                title='pyprefab error',
-                border_style='red',
-            )
-        )
-        raise typer.Exit(1)
-
     # If there is already content in the package directory, exit (unless
     # the directory is on the exception list below)
     allow_existing = ['.git']
