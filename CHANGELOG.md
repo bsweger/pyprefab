@@ -5,6 +5,14 @@ All notable changes to `pyprefab` are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com), and the
 project uses [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+
+### Changed
+
+- In interactive mode, Pyprefab now returns an immediate error message
+  for invalid package names instead of waiting until the rest of the prompts
+  are filled out.
+
 ## 0.5.5
 
 ### Added
