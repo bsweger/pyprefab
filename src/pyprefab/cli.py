@@ -15,6 +15,7 @@ from rich.panel import Panel
 from rich.theme import Theme
 from typing_extensions import Annotated
 
+from pyprefab.exceptions import PyprefabBadParameter
 from pyprefab.logging import setup_logging
 
 setup_logging()
@@ -37,16 +38,16 @@ app = typer.Typer(
 )
 
 
-def validate_package_name(name: str) -> bool:
-    """Validate package name follows Python package naming conventions."""
-    if name.isidentifier():
-        return name
+def validate_package_name(value: str) -> str:
+    """Validate that package name follows Python package naming conventions."""
+    if not value.isidentifier():
+        if value[0].isdigit():
+            msg = 'Python package names cannot start with a number'
+        else:
+            msg = 'Python package names must contain letters, numbers, or underscores'
+        raise PyprefabBadParameter(msg)
     else:
-        raise typer.BadParameter(
-            f'{name} is not a valid Python package name.\n'
-            'Package names can contain letters, numbers, and underscores. They cannot start with a number.\n'
-            'See https://docs.python.org/3/reference/lexical_analysis.html#identifiers for more information.'
-        )
+        return value
 
 
 def render_templates(context: dict, templates_dir: Path, target_dir: Path):
