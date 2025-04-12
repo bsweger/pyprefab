@@ -15,6 +15,7 @@ from rich.panel import Panel
 from rich.theme import Theme
 from typing_extensions import Annotated
 
+from pyprefab.exceptions import PyprefabBadParameter
 from pyprefab.logging import setup_logging
 
 setup_logging()
@@ -37,9 +38,16 @@ app = typer.Typer(
 )
 
 
-def validate_package_name(name: str) -> bool:
-    """Validate package name follows Python package naming conventions."""
-    return name.isidentifier() and name.islower()
+def validate_package_name(value: str) -> str:
+    """Validate that package name follows Python package naming conventions."""
+    if not value.isidentifier():
+        if value[0].isdigit():
+            msg = 'Python package names cannot start with a number'
+        else:
+            msg = 'Python package names must contain letters, numbers, or underscores'
+        raise PyprefabBadParameter(msg)
+    else:
+        return value
 
 
 def render_templates(context: dict, templates_dir: Path, target_dir: Path):
@@ -91,6 +99,7 @@ def main(
         typer.Option(
             help='Name of the package',
             prompt=typer.style('Package name 🐍', fg=typer.colors.MAGENTA, bold=True),
+            callback=validate_package_name,
             show_default=False,
         ),
     ],
@@ -127,17 +136,6 @@ def main(
     """
     🐍 Create Python package boilerplate 🐍
     """
-    if not validate_package_name(name):
-        err_console = Console(stderr=True)
-        err_console.print(
-            Panel.fit(
-                f'⛔️ Package not created: {name} is not a valid Python package name',
-                title='pyprefab error',
-                border_style='red',
-            )
-        )
-        raise typer.Exit(1)
-
     # If there is already content in the package directory, exit (unless
     # the directory is on the exception list below)
     allow_existing = ['.git']

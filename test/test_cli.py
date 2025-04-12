@@ -5,7 +5,38 @@ from unittest.mock import patch
 import pytest
 from typer.testing import CliRunner
 
-from pyprefab.cli import app  # type: ignore
+from pyprefab.cli import (
+    app,  # type: ignore
+    validate_package_name,
+)
+from pyprefab.exceptions import PyprefabBadParameter
+
+
+@pytest.mark.parametrize(
+    'package_name, expected_result',
+    [
+        ('valid_package_name', 'valid_package_name'),
+        ('valid_package_name123', 'valid_package_name123'),
+        ('AnnoyingButValid', 'AnnoyingButValid'),
+    ],
+)
+def test_valid_package_name(package_name, expected_result):
+    """Test package name validation."""
+    assert validate_package_name(package_name) == expected_result
+
+
+@pytest.mark.parametrize(
+    'package_name',
+    [
+        ('invalid-package-name'),
+        ('invalid-package-name!'),
+        ('1invalid_package_name'),
+    ],
+)
+def test_invalid_package_name(package_name):
+    """Test package name validation."""
+    with pytest.raises(PyprefabBadParameter):
+        validate_package_name(package_name)
 
 
 @pytest.mark.parametrize(
@@ -38,7 +69,7 @@ def test_pyprefab_cli(tmp_path, cli_inputs, expected_dirs):
     assert set(dir_names) == set(expected_dirs)
 
 
-def test_invalid_package_name(tmp_path):
+def test_app_invalid_package_name(tmp_path):
     """Package name must be a valid Python identifier."""
     runner = CliRunner()
     result = runner.invoke(
