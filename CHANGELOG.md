@@ -7,6 +7,10 @@ project uses [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Added
+
+- Add a `--version` parameter to the pyprefab CLI
+
 ### Changed
 
 - In interactive mode, Pyprefab now returns an immediate error message

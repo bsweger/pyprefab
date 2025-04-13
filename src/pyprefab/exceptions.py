@@ -16,9 +16,9 @@ def style_message(message) -> str:
     use Click's echo function, which does not support rich text.
     https://click.palletsprojects.com/en/stable/api/#click.style
     """
-    msg = click.style(f'{message}')  # colors would go here
-    msg = f'❌ {msg}'
-    return msg
+    message = click.style(f'{message}')  # colors would go here
+    message = f'❌ {message}'
+    return message
 
 
 class PyprefabBadParameter(typer.BadParameter):
