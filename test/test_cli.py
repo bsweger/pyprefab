@@ -3,6 +3,7 @@
 from unittest.mock import patch
 
 import pytest
+from click import unstyle
 from typer.testing import CliRunner
 
 import pyprefab
@@ -78,7 +79,7 @@ def test_version_param():
         ['--name', 'bad-package-name!', '--version'],
     )
     assert result.exit_code == 0
-    assert result.stdout.strip() == f'pyprefab {pyprefab.__version__}'
+    assert unstyle(result.stdout).strip() == f'pyprefab {pyprefab.__version__}'
 
 
 def test_app_invalid_package_name(tmp_path):
