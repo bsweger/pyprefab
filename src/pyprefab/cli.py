@@ -15,6 +15,7 @@ from rich.panel import Panel
 from rich.theme import Theme
 from typing_extensions import Annotated
 
+from pyprefab import __version__
 from pyprefab.exceptions import PyprefabBadParameter
 from pyprefab.logging import setup_logging
 
@@ -48,6 +49,13 @@ def validate_package_name(value: str) -> str:
         raise PyprefabBadParameter(msg)
     else:
         return value
+
+
+def version_callback(value: bool):
+    """Return the package version."""
+    if value:
+        print(f'pyprefab {__version__}')
+        raise typer.Exit()
 
 
 def render_templates(context: dict, templates_dir: Path, target_dir: Path):
@@ -132,6 +140,10 @@ def main(
             prompt=typer.style('Include Sphinx docs? 📄', fg=typer.colors.MAGENTA, bold=True),
         ),
     ] = False,
+    version: Annotated[
+        Optional[bool],
+        typer.Option('--version', callback=version_callback, is_eager=True),
+    ] = None,
 ):
     """
     🐍 Create Python package boilerplate 🐍

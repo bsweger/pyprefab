@@ -5,6 +5,7 @@ from unittest.mock import patch
 import pytest
 from typer.testing import CliRunner
 
+import pyprefab
 from pyprefab.cli import (
     app,  # type: ignore
     validate_package_name,
@@ -67,6 +68,17 @@ def test_pyprefab_cli(tmp_path, cli_inputs, expected_dirs):
             dir_count += 1
     assert dir_count == len(expected_dirs)
     assert set(dir_names) == set(expected_dirs)
+
+
+def test_version_param():
+    """Version param runs eagerly and exits."""
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        ['--name', 'bad-package-name!', '--version'],
+    )
+    assert result.exit_code == 0
+    assert result.stdout.strip() == f'pyprefab {pyprefab.__version__}'
 
 
 def test_app_invalid_package_name(tmp_path):
