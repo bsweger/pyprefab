@@ -23,7 +23,7 @@ updates:
       - dependency-name: "jinja2"
     allow:
       - dependency-type: "all"
-    # group all run-of-the mill updates into a single pull request
+    versioning-strategy: increase
     groups:
       py-updates:
         applies-to: version-updates
