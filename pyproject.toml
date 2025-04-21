@@ -25,6 +25,7 @@ dev = [
     'coverage',
     'freezegun',
     'mypy',
+    'nox',
     'pre-commit',
     'pytest',
     "pytest-random-order>=1.1.1",

@@ -175,3 +175,30 @@ The PR itself should:
 in the description.
 - Have a description that includes any other information or context that will
 help a code reviewer understand your changes.
+
+# Contributing to pyprefab
+
+## Development Environment
+
+This project uses `uv` for dependency management and `nox` for automation.
+To get started:
+
+1. Install uv (see https://github.com/astral-sh/uv)
+2. Install nox: `uv pip install nox`
+
+## Development Commands
+
+You can run various development tasks using nox:
+
+- `nox -s lint` - Run the linter (ruff)
+- `nox -s typecheck` - Run static type checking
+- `nox -s test` - Run the test suite (will run on all supported Python versions
+  if available)
+- `nox -s docs` - Build the documentation
+- `nox -s docs_serve` - Serve the documentation locally with auto-reload
+
+To run a specific session with a specific Python version:
+
+```bash
+nox -s test-3.11
+```

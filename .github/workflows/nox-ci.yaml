@@ -1,0 +1,67 @@
+name: Nox CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_COLOR: "1"
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_NO_PYTHON_VERSION_WARNING: "1"
+
+jobs:
+  lint-and-type:
+    name: Lint and Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182
+        with:
+          version: ">=0.0.1"
+
+      - name: Install nox
+        run: uv pip install nox
+
+      - name: Run lint
+        run: nox -s lint
+
+      - name: Run type checking
+        run: nox -s typecheck
+
+  test-and-docs:
+    needs: lint-and-type
+    name: Test & Docs
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182
+        with:
+          python-version: ${{ matrix.python-version }}
+          version: ">=0.0.1"
+
+      - name: Install nox
+        run: uv pip install nox
+
+      - name: Run tests
+        run: nox -s test-${{ matrix.python-version }}
+
+      - name: Build docs
+        run: nox -s docs-${{ matrix.python-version }}
