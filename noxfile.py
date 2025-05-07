@@ -1,38 +1,63 @@
 import nox
 
-PYTHON_VERSIONS = ['3.9', '3.10', '3.11', '3.12', '3.13']
+nox.options.default_venv_backend = 'uv'
+
+PYPROJECT = nox.project.load_toml('pyproject.toml')
+PYTHON_VERSIONS = nox.project.python_versions(PYPROJECT, max_version='3.14')
 
 
-@nox.session
+@nox.session(tags=['ci'])
 def lint(session: nox.Session) -> None:
     """Run the linter."""
-    session.run('uv', 'pip', 'install', 'ruff', external=True)
+    session.install('ruff')
     session.run('ruff', 'check', '.')
 
 
-@nox.session
+@nox.session(tags=['ci'])
 def typecheck(session: nox.Session) -> None:
     """Run static type checking."""
-    session.run('uv', 'pip', 'install', 'mypy', external=True)
+    session.install('mypy')
     session.run('mypy', 'src', 'test')
 
 
-@nox.session(python=PYTHON_VERSIONS)
+@nox.session(python=PYTHON_VERSIONS, tags=['ci'])
 def test(session: nox.Session) -> None:
-    """Run tests."""
-    session.run('uv', 'sync', external=True)
-    session.run('pytest', 'test', '--cov')
+    """Run the test suite."""
+    session.run_install(
+        'uv',
+        'sync',
+        '--active',
+        '--group=dev',
+        '--frozen',
+        f'--python={session.virtualenv.location}',
+    )
+    session.run('pytest')
 
 
-@nox.session(python=PYTHON_VERSIONS)
+@nox.session(tags=['ci'])
+@nox.parametrize('python', ['3.10', '3.11', '3.12', '3.13'])  # 3.14 can't build
 def docs(session: nox.Session) -> None:
-    """Build Sphinx documentation."""
-    session.run('uv', 'pip', 'install', 'sphinx', 'sphinx-rtd-theme', external=True)
-    session.run('sphinx-build', '-W', '-b', 'html', 'docs/source', 'docs/build/html')
+    """Build the documentation."""
+    session.run_install(
+        'uv',
+        'sync',
+        '--active',
+        '--group=docs',
+        '--frozen',
+        f'--python={session.virtualenv.location}',
+    )
+    session.run('sphinx-build', '-W', '-b', 'html', 'docs/source', 'docs/_build/html')
 
 
 @nox.session
 def docs_serve(session: nox.Session) -> None:
     """Serve the documentation locally."""
-    session.run('uv', 'pip', 'install', 'sphinx', 'sphinx-rtd-theme', 'sphinx-autobuild', external=True)
-    session.run('sphinx-autobuild', 'docs/source', 'docs/build/html')
+    session.run_install(
+        'uv',
+        'sync',
+        '--active',
+        '--group=docs',
+        '--frozen',
+        f'--python={session.virtualenv.location}',
+    )
+    session.run('sphinx-autobuild', 'docs/source', 'docs/_build/html', external=True)

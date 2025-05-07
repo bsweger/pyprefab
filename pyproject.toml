@@ -6,7 +6,7 @@ authors = [
 ]
 license = "MIT"
 readme = 'README.md'
-requires-python = '>=3.9,<3.14'
+requires-python = '>=3.9'
 classifiers = [
     'Programming Language :: Python :: 3',
 ]
@@ -15,8 +15,8 @@ dynamic = ['version']
 dependencies = [
     'structlog',
     'rich',
-    "typer",
-    "jinja2>=3.1.5",
+    'typer',
+    'jinja2>=3.1.5',
 ]
 
 [dependency-groups]
@@ -25,7 +25,7 @@ dev = [
     'coverage',
     'freezegun',
     'mypy',
-    'nox',
+    'nox>=2025.05.01',
     'pre-commit',
     'pytest',
     "pytest-random-order>=1.1.1",
