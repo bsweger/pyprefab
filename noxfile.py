@@ -4,6 +4,7 @@ nox.options.default_venv_backend = 'uv'
 
 PYPROJECT = nox.project.load_toml('pyproject.toml')
 PYTHON_VERSIONS = nox.project.python_versions(PYPROJECT, max_version='3.14')
+PYTHON_LATEST = '3.13'
 
 
 @nox.session(tags=['ci'])
@@ -21,7 +22,7 @@ def typecheck(session: nox.Session) -> None:
 
 
 @nox.session(python=PYTHON_VERSIONS, tags=['ci'])
-def test(session: nox.Session) -> None:
+def tests(session: nox.Session) -> None:
     """Install dependencies from lockfile and run tests."""
     session.run_install(
         'uv',
@@ -31,7 +32,19 @@ def test(session: nox.Session) -> None:
         '--frozen',
         f'--python={session.virtualenv.location}',
     )
-    session.run('pytest')
+    if session.python == PYTHON_LATEST:
+        session.run('coverage', 'erase')
+        session.run('coverage', 'run', '-m', 'pytest')
+    else:
+        session.run('pytest')
+
+
+@nox.session(tags=['ci'], python=PYTHON_LATEST, requires=[f'tests-{PYTHON_LATEST}'])
+def coverage(session):
+    """Check test coverage."""
+    session.install('coverage')
+    session.run('coverage', 'html')
+    session.run('coverage', 'report', '--format', 'markdown')
 
 
 @nox.session(python=PYTHON_VERSIONS)
