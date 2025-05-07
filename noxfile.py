@@ -22,13 +22,28 @@ def typecheck(session: nox.Session) -> None:
 
 @nox.session(python=PYTHON_VERSIONS, tags=['ci'])
 def test(session: nox.Session) -> None:
-    """Run the test suite."""
+    """Install dependencies from lockfile and run tests."""
     session.run_install(
         'uv',
         'sync',
         '--active',
         '--group=dev',
         '--frozen',
+        f'--python={session.virtualenv.location}',
+    )
+    session.run('pytest')
+
+
+@nox.session(python=PYTHON_VERSIONS)
+def test_install(session: nox.Session) -> None:
+    """Install as a package and run tests."""
+    session.run_install(
+        'uv',
+        'pip',
+        'install',
+        '-e',
+        '.',
+        '--group=dev',
         f'--python={session.virtualenv.location}',
     )
     session.run('pytest')
