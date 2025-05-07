@@ -30,6 +30,7 @@ def tests(session: nox.Session) -> None:
         '--active',
         '--group=dev',
         '--frozen',
+        '--quiet',
         f'--python={session.virtualenv.location}',
     )
     if session.python == PYTHON_LATEST:
@@ -57,6 +58,7 @@ def test_install(session: nox.Session) -> None:
         '-e',
         '.',
         '--group=dev',
+        '--quiet',
         f'--python={session.virtualenv.location}',
     )
     session.run('pytest')
@@ -72,6 +74,7 @@ def docs(session: nox.Session) -> None:
         '--active',
         '--group=docs',
         '--frozen',
+        '--quiet',
         f'--python={session.virtualenv.location}',
     )
     session.run('sphinx-build', '-W', '-b', 'html', 'docs/source', 'docs/_build/html')
