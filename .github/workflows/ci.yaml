@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        nox_tests: ${{ fromJson(needs.generate-jobs.outputs.nox_tests) }}
+        nox_tests: ${{ fromJson(needs.generate-nox-sessions.outputs.nox_tests) }}
 
     steps:
       - name: Checkout 🛎️
