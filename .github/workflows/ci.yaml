@@ -16,6 +16,28 @@ env:
   PIP_NO_PYTHON_VERSION_WARNING: "1"
 
 jobs:
+  generate-nox-sessions:
+    name: Get nox session lists to use for matrices in other jobs
+    runs-on: ubuntu-latest
+    outputs:
+      nox_tests: ${{ steps.set-matrix.outputs.session }}
+      nox_docs: ${{ steps.set-matrix.outputs.docs }}
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install uv 🌟
+        uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
+
+      - name: Set nox session matrices 🧩
+        id: set-matrix
+        shell: bash
+        run: |
+          echo nox_tests=$(nox --session tests --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
+          echo nox_docs=$(nox --session docs --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
 
   lint:
     name: Run linter
@@ -28,21 +50,24 @@ jobs:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca #v6.0.1
-        with:
-            version: ">=0.0.1"
+        uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
+
+      - name: Install nox 🔧
+        run: uv pip install nox
 
       - name: Lint 🧹
-        run: |
-          uv tool install ruff
-          ruff check
+        run: nox --session lint
+
+      - name: Type Check 🧐
+        run: nox --session typecheck
 
   tests:
     name: Run tests
+    needs: generate-nox-sessions
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        nox_test: ${{ fromJson(needs.generate-jobs.outputs.nox_tests) }}
 
     steps:
       - name: Checkout 🛎️
@@ -51,28 +76,24 @@ jobs:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca #v6.0.1
-        with:
-            python-version: ${{ matrix.python-version }}
-            version: ">=0.0.1"
+        uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
 
-      - name: Test with python ${{ matrix.python-version }} 🧪
-        run: |
-          uv run --frozen coverage run \
-            --data-file .coverage.${{ matrix.python-version }} \
-            -m pytest
+      - name: Install nox
+        run: uv pip install nox
+
+      - name: Test with python ${{ matrix.nox_test }} 🧪
+        run: nox --session ${{ matrix.nox_test }}
 
       - name: Upload coverage data 📤
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-data-${{ matrix.python-version }}
-          path: .coverage.*
+          name: coverage-data
+          path: .coverage
           include-hidden-files: true
           if-no-files-found: ignore
 
   coverage:
-    # https://hynek.me/articles/ditch-codecov-python/
-    name: Combine coverage reports & fail if below threshold
+    name: Generate coverage reports & fail if below threshold
     runs-on: ubuntu-latest
     needs: tests
     if: always()
@@ -84,28 +105,22 @@ jobs:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca #v6.0.1
-        with:
-          version: '>=0.0.1'
+        uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
+
+      - name: Install nox
+        run: uv pip install nox
 
       - name: Download coverage data 📥
         uses: actions/download-artifact@v4
         with:
-          pattern: coverage-data-*
-          merge-multiple: true
+          pattern: coverage-data
 
       - name: Generate coverage report 📊
         run: |
-          uv tool install 'coverage[toml]'
-
-          coverage combine
-          coverage html --skip-covered --skip-empty
+          nox --session coverage
           coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
 
-          # Generate report again, this time with a fail-under threshold
-          coverage report --fail-under=80
-
-      - name: Upload HTML report if coverage check fails
+      - name: Upload HTML report if coverage check fails 📤
         uses: actions/upload-artifact@v4
         with:
             name: html-cov-report

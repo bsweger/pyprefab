@@ -5,6 +5,7 @@ nox.options.default_venv_backend = 'uv'
 PYPROJECT = nox.project.load_toml('pyproject.toml')
 PYTHON_VERSIONS = nox.project.python_versions(PYPROJECT, max_version='3.14')
 PYTHON_LATEST = '3.13'
+COVERAGE_THRESHOLD = 100
 
 
 @nox.session(tags=['ci'])
@@ -41,11 +42,12 @@ def tests(session: nox.Session) -> None:
 
 
 @nox.session(tags=['ci'], python=PYTHON_LATEST, requires=[f'tests-{PYTHON_LATEST}'])
-def coverage(session):
+def coverage(session) -> None:
     """Check test coverage."""
     session.install('coverage')
-    session.run('coverage', 'html')
+    session.run('coverage', 'html', '--skip-covered', '--skip-empty')
     session.run('coverage', 'report', '--format', 'markdown')
+    session.run('coverage', 'report', f'--fail-under={COVERAGE_THRESHOLD}')
 
 
 @nox.session(python=PYTHON_VERSIONS)
