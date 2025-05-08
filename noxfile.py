@@ -9,21 +9,21 @@ PYTHON_LATEST = PYTHON_VERSIONS[-1]
 COVERAGE_THRESHOLD = 90
 
 
-@nox.session(tags=['ci'])
+@nox.session(tags=['checks', 'ci'])
 def lint(session: nox.Session) -> None:
     """Run the linter."""
     session.install('ruff')
     session.run('ruff', 'check', '.')
 
 
-@nox.session(tags=['ci'])
+@nox.session(tags=['checks', 'ci'])
 def typecheck(session: nox.Session) -> None:
     """Run static type checking."""
     session.install('mypy')
     session.run('mypy', 'src', 'test')
 
 
-@nox.session(python=PYTHON_VERSIONS, tags=['ci'])
+@nox.session(python=PYTHON_VERSIONS, tags=['checks', 'ci'])
 def tests(session: nox.Session) -> None:
     """Install dependencies from lockfile and run tests."""
     session.run_install(
@@ -38,7 +38,7 @@ def tests(session: nox.Session) -> None:
     session.run('pytest')
 
 
-@nox.session(tags=['ci'], python=PYTHON_LATEST, requires=[f'tests-{PYTHON_LATEST}'])
+@nox.session(tags=['checks', 'ci'], python=PYTHON_LATEST, requires=[f'tests-{PYTHON_LATEST}'])
 def coverage(session) -> None:
     """Check test coverage."""
     session.run_install(
@@ -78,7 +78,7 @@ def test_install(session: nox.Session) -> None:
     session.run('pytest')
 
 
-@nox.session(python=PYTHON_VERSIONS, tags=['ci'])
+@nox.session(python=PYTHON_VERSIONS, tags=['checks', 'ci'])
 def docs(session: nox.Session) -> None:
     """Build the documentation."""
     session.run_install(
