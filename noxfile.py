@@ -34,20 +34,31 @@ def tests(session: nox.Session) -> None:
         '--quiet',
         f'--python={session.virtualenv.location}',
     )
-    if session.python == PYTHON_LATEST:
-        session.run('coverage', 'erase')
-        session.run('coverage', 'run', '-m', 'pytest')
-    else:
-        session.run('pytest')
+    session.run('pytest')
 
 
 @nox.session(tags=['ci'], python=PYTHON_LATEST, requires=[f'tests-{PYTHON_LATEST}'])
 def coverage(session) -> None:
     """Check test coverage."""
-    session.install('coverage')
-    session.run('coverage', 'html', '--skip-covered', '--skip-empty')
-    session.run('coverage', 'report', '--format', 'markdown')
-    session.run('coverage', 'report', f'--fail-under={COVERAGE_THRESHOLD}')
+    session.run_install(
+        'uv',
+        'sync',
+        '--active',
+        '--group=dev',
+        '--frozen',
+        '--quiet',
+        f'--python={session.virtualenv.location}',
+    )
+    session.run('coverage', 'erase', silent=True)
+    session.run('coverage', 'run', '-m', 'pytest', '--quiet', '--no-header', '--no-summary', silent=True)
+    session.run('coverage', 'html', '--skip-covered', '--skip-empty', silent=True)
+    session.run(
+        'coverage',
+        'report',
+        '--format',
+        'markdown',
+        f'--fail-under={COVERAGE_THRESHOLD}',
+    )
 
 
 @nox.session(python=PYTHON_VERSIONS)

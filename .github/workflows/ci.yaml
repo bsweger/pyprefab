@@ -78,18 +78,9 @@ jobs:
       - name: Test with python ${{ matrix.nox_test }} 🧪
         run: uvx nox --session ${{ matrix.nox_test }}
 
-      - name: Upload coverage data 📤
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-data
-          path: .coverage
-          include-hidden-files: true
-          if-no-files-found: ignore
-
   coverage:
     name: Generate coverage reports & fail if below threshold
     runs-on: ubuntu-latest
-    if: always()
 
     steps:
       - name: Checkout 🛎️
@@ -100,15 +91,9 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
 
-      - name: Download coverage data 📥
-        uses: actions/download-artifact@v4
-        with:
-          pattern: coverage-data
-
       - name: Generate coverage report 📊
         run: |
-          uvx nox --session coverage
-          coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
+          uvx nox --session coverage >> $GITHUB_STEP_SUMMARY
 
       - name: Upload HTML report if coverage check fails 📤
         uses: actions/upload-artifact@v4
