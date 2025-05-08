@@ -3,8 +3,9 @@ import nox
 nox.options.default_venv_backend = 'uv'
 
 PYPROJECT = nox.project.load_toml('pyproject.toml')
-PYTHON_VERSIONS = nox.project.python_versions(PYPROJECT, max_version='3.14')
-PYTHON_LATEST = '3.13'
+PYTHON_VERSIONS = nox.project.python_versions(PYPROJECT)
+# assume that the programming version classifies in pyproject.toml are in ascending order
+PYTHON_LATEST = PYTHON_VERSIONS[-1]
 COVERAGE_THRESHOLD = 90
 
 
@@ -77,8 +78,7 @@ def test_install(session: nox.Session) -> None:
     session.run('pytest')
 
 
-@nox.session(tags=['ci'])
-@nox.parametrize('python', ['3.10', '3.11', '3.12', '3.13'])  # 3.14 can't build
+@nox.session(python=PYTHON_VERSIONS, tags=['ci'])
 def docs(session: nox.Session) -> None:
     """Build the documentation."""
     session.run_install(
@@ -87,7 +87,7 @@ def docs(session: nox.Session) -> None:
         '--active',
         '--group=docs',
         '--frozen',
-        '--quiet',
+        #'--quiet',
         f'--python={session.virtualenv.location}',
     )
     session.run('sphinx-build', '-W', '-b', 'html', 'docs/source', 'docs/_build/html')
