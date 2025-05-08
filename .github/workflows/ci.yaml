@@ -20,8 +20,8 @@ jobs:
     name: Get nox session lists to use for matrices in other jobs
     runs-on: ubuntu-latest
     outputs:
-      nox_tests: ${{ steps.set-matrix.outputs.session }}
-      nox_docs: ${{ steps.set-matrix.outputs.docs }}
+      nox_tests: ${{ steps.set-matrix.outputs.nox_tests }}
+      nox_docs: ${{ steps.set-matrix.outputs.nox_docs }}
 
     steps:
       - name: Checkout 🛎️
@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        nox_test: ${{ fromJson(needs.generate-jobs.outputs.nox_tests) }}
+        nox_tests: ${{ fromJson(needs.generate-jobs.outputs.nox_tests) }}
 
     steps:
       - name: Checkout 🛎️
@@ -75,8 +75,8 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
 
-      - name: Test with python ${{ matrix.nox_test }} 🧪
-        run: uvx nox --session ${{ matrix.nox_test }}
+      - name: Run nox test session ${{ matrix.nox_tests }} 🧪
+        run: uvx nox --session ${{ matrix.nox_tests }}
 
   coverage:
     name: Generate coverage reports & fail if below threshold
