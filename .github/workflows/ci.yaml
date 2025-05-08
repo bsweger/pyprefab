@@ -58,6 +58,33 @@ jobs:
       - name: Type Check 🧐
         run: uvx nox --session typecheck
 
+  coverage:
+    name: Generate coverage reports & fail if below threshold
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install uv 🌟
+        uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
+
+      - name: Generate coverage report 📊
+        # The coverage session runs the test suite using the latest stable
+        # python version and uses that output to generate the coverage report
+        # (as opposed to merging coverage reports from all python versions)
+        run: |
+          uvx nox --session coverage >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload HTML report if coverage check fails 📤
+        uses: actions/upload-artifact@v4
+        with:
+            name: html-cov-report
+            path: htmlcov
+        if: ${{ failure() }}
+
   tests:
     name: Run tests
     needs: generate-nox-sessions
@@ -78,9 +105,13 @@ jobs:
       - name: Run nox test session ${{ matrix.nox_tests }} 🧪
         run: uvx nox --session ${{ matrix.nox_tests }}
 
-  coverage:
-    name: Generate coverage reports & fail if below threshold
+  doc_build:
+    name: Test docs build
+    needs: generate-nox-sessions
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nox_tests: ${{ fromJson(needs.generate-nox-sessions.outputs.nox_docs) }}
 
     steps:
       - name: Checkout 🛎️
@@ -91,13 +122,5 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
 
-      - name: Generate coverage report 📊
-        run: |
-          uvx nox --session coverage >> $GITHUB_STEP_SUMMARY
-
-      - name: Upload HTML report if coverage check fails 📤
-        uses: actions/upload-artifact@v4
-        with:
-            name: html-cov-report
-            path: htmlcov
-        if: ${{ failure() }}
+      - name: Run nox test session ${{ matrix.nox_docs }} 📜
+        run: uvx nox --session ${{ matrix.nox_docs }}
