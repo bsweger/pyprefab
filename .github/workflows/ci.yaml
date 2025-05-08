@@ -36,11 +36,11 @@ jobs:
         id: set-matrix
         shell: bash
         run: |
-          echo nox_tests=$(nox --session tests --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
-          echo nox_docs=$(nox --session docs --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
+          echo nox_tests=$(uvx nox --session tests --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
+          echo nox_docs=$(uvx nox --session docs --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
 
   lint:
-    name: Run linter
+    name: Lint and type check
     runs-on: ubuntu-latest
 
     steps:
@@ -52,14 +52,11 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
 
-      - name: Install nox 🔧
-        run: uv pip install nox
-
       - name: Lint 🧹
-        run: nox --session lint
+        run: uvx nox --session lint
 
       - name: Type Check 🧐
-        run: nox --session typecheck
+        run: uvx nox --session typecheck
 
   tests:
     name: Run tests
@@ -78,11 +75,8 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
 
-      - name: Install nox
-        run: uv pip install nox
-
       - name: Test with python ${{ matrix.nox_test }} 🧪
-        run: nox --session ${{ matrix.nox_test }}
+        run: uvx nox --session ${{ matrix.nox_test }}
 
       - name: Upload coverage data 📤
         uses: actions/upload-artifact@v4
@@ -95,7 +89,6 @@ jobs:
   coverage:
     name: Generate coverage reports & fail if below threshold
     runs-on: ubuntu-latest
-    needs: tests
     if: always()
 
     steps:
@@ -107,9 +100,6 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
 
-      - name: Install nox
-        run: uv pip install nox
-
       - name: Download coverage data 📥
         uses: actions/download-artifact@v4
         with:
@@ -117,7 +107,7 @@ jobs:
 
       - name: Generate coverage report 📊
         run: |
-          nox --session coverage
+          uvx nox --session coverage
           coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
 
       - name: Upload HTML report if coverage check fails 📤
