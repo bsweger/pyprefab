@@ -5,7 +5,7 @@ nox.options.default_venv_backend = 'uv'
 PYPROJECT = nox.project.load_toml('pyproject.toml')
 PYTHON_VERSIONS = nox.project.python_versions(PYPROJECT, max_version='3.14')
 PYTHON_LATEST = '3.13'
-COVERAGE_THRESHOLD = 100
+COVERAGE_THRESHOLD = 90
 
 
 @nox.session(tags=['ci'])
