@@ -103,7 +103,7 @@ def render_templates(context: dict, templates_dir: Path, target_dir: Path):
 @app.command()
 def main(
     name: Annotated[
-        Optional[str],
+        str,
         typer.Option(
             help='Name of the package',
             prompt=typer.style('Package name 🐍', fg=typer.colors.MAGENTA, bold=True),

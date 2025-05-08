@@ -16,9 +16,31 @@ env:
   PIP_NO_PYTHON_VERSION_WARNING: "1"
 
 jobs:
+  generate-nox-sessions:
+    name: Get nox session lists to use for matrices in other jobs
+    runs-on: ubuntu-latest
+    outputs:
+      nox_tests: ${{ steps.set-matrix.outputs.nox_tests }}
+      nox_docs: ${{ steps.set-matrix.outputs.nox_docs }}
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install uv 🌟
+        uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
+
+      - name: Set nox session matrices 🧩
+        id: set-matrix
+        shell: bash
+        run: |
+          echo nox_tests=$(uvx nox --session tests --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
+          echo nox_docs=$(uvx nox --session docs --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
 
   lint:
-    name: Run linter
+    name: Lint and type check
     runs-on: ubuntu-latest
 
     steps:
@@ -28,54 +50,17 @@ jobs:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca #v6.0.1
-        with:
-            version: ">=0.0.1"
+        uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
 
       - name: Lint 🧹
-        run: |
-          uv tool install ruff
-          ruff check
+        run: uvx nox --session lint
 
-  tests:
-    name: Run tests
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
-
-    steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: Install uv 🌟
-        uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca #v6.0.1
-        with:
-            python-version: ${{ matrix.python-version }}
-            version: ">=0.0.1"
-
-      - name: Test with python ${{ matrix.python-version }} 🧪
-        run: |
-          uv run --frozen coverage run \
-            --data-file .coverage.${{ matrix.python-version }} \
-            -m pytest
-
-      - name: Upload coverage data 📤
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-data-${{ matrix.python-version }}
-          path: .coverage.*
-          include-hidden-files: true
-          if-no-files-found: ignore
+      - name: Type Check 🧐
+        run: uvx nox --session typecheck
 
   coverage:
-    # https://hynek.me/articles/ditch-codecov-python/
-    name: Combine coverage reports & fail if below threshold
+    name: Generate coverage reports & fail if below threshold
     runs-on: ubuntu-latest
-    needs: tests
-    if: always()
 
     steps:
       - name: Checkout 🛎️
@@ -84,30 +69,58 @@ jobs:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca #v6.0.1
-        with:
-          version: '>=0.0.1'
-
-      - name: Download coverage data 📥
-        uses: actions/download-artifact@v4
-        with:
-          pattern: coverage-data-*
-          merge-multiple: true
+        uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
 
       - name: Generate coverage report 📊
+        # The coverage session runs the test suite using the latest stable
+        # python version and uses that output to generate the coverage report
+        # (as opposed to merging coverage reports from all python versions)
         run: |
-          uv tool install 'coverage[toml]'
+          uvx nox --session coverage >> $GITHUB_STEP_SUMMARY
 
-          coverage combine
-          coverage html --skip-covered --skip-empty
-          coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
-
-          # Generate report again, this time with a fail-under threshold
-          coverage report --fail-under=80
-
-      - name: Upload HTML report if coverage check fails
+      - name: Upload HTML report if coverage check fails 📤
         uses: actions/upload-artifact@v4
         with:
             name: html-cov-report
             path: htmlcov
         if: ${{ failure() }}
+
+  tests:
+    name: Run tests
+    needs: generate-nox-sessions
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nox_tests: ${{ fromJson(needs.generate-nox-sessions.outputs.nox_tests) }}
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install uv 🌟
+        uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
+
+      - name: Run nox test session ${{ matrix.nox_tests }} 🧪
+        run: uvx nox --session ${{ matrix.nox_tests }}
+
+  doc_build:
+    name: Test docs build
+    needs: generate-nox-sessions
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nox_tests: ${{ fromJson(needs.generate-nox-sessions.outputs.nox_docs) }}
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install uv 🌟
+        uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
+
+      - name: Run nox docs session ${{ matrix.nox_docs }} 📜
+        run: uvx nox --session docs ${{ matrix.nox_docs }}

@@ -25,9 +25,7 @@ For contributing to this code base, you'll need:
 
 - A [GitHub account](https://github.com/)
 - [Git](https://git-scm.com/) installed on your machine
-- **optional**: [uv](https://docs.astral.sh/uv/getting-started/installation/)
-(the Python-based directions below use `uv`, but if you
-already have a preferred Python toolset, that should work too)
+- [uv](https://docs.astral.sh/uv/getting-started/installation/)
 
 > [!IMPORTANT]
 > If you have an active Python virtual environment (for example, conda's
@@ -40,7 +38,7 @@ already have a preferred Python toolset, that should work too)
 
 2. Clone the forked repository to your machine:
 
-    ```sh
+    ```bash
     git clone https://github.com/<username>/pyprefab.git
     cd pyprefab
     ```
@@ -48,7 +46,7 @@ already have a preferred Python toolset, that should work too)
 3. **optional:** Set the `upstream` remote to sync your fork with the `pyprefab`
 repository:
 
-    ```sh
+    ```bash
     git remote add upstream https://github.com/bsweger/pyprefab.git
     git fetch upstream
     ```
@@ -61,36 +59,53 @@ project dependencies. The
 installing Python, creating a virtual environment, and installing project
 dependencies.
 
-    ```sh
+    ```bash
     uv sync
     ```
 
    (More information about how uv
     [finds or downloads a Python interpreter](https://docs.astral.sh/uv/reference/cli/#uv-python))
 
-2. Run the test suite to check that everything works correctly:
+2. Run the [nox](https://nox.thea.codes/en/stable/)-based checks to ensure that
+   everything works correctly:
 
     > [!TIP]
     > Prefixing python commands with `uv run` instructs uv to run the command
     > in the project's virtual environment, even if you haven't explicitly
     > activated it.
 
-    ```sh
-    uv run pytest
+    ```bash
+    uv run nox --tags checks
     ```
 
-3. Install the `pre-commit` hooks used for linting and other checks (this may
-take a few minutes but only needs to be done once).
+    The above command will run the checks against every version of Python
+    supported by pyprefab. Alternately, you could save time by running the
+    checks against a specific version of Python:
 
-    ```sh
-    uv run pre-commit install
+    ```bash
+    uv run nox --tags checks --python 3.13
     ```
 
-4. Make sure the `pre-commit` checks are working correctly:
+    GitHub actions will run the checks against all Python versions when
+    you open a pull request.
 
-    ```sh
-    uv run pre-commit install
-    ```
+### Make your changes
+
+Once your development environment is set up, you can start making your changes.
+Note that you can test your work in progress by running individual nox sessions
+as you go:
+
+- `nox -s lint` - Run the linter (ruff)
+- `nox -s typecheck` - Run static type checking (mypy)
+- `nox -s tests` - Run the test suite (will run on all supported Python versions)
+- `nox -s docs` - Build the documentation
+- `nox -s docs_serve` - Serve the documentation locally with auto-reload
+
+To run a specific session with a specific Python version:
+
+```bash
+nox -s test-3.11
+```
 
 ### Updating your development environment
 
@@ -99,7 +114,7 @@ to the code, make sure your fork and development environment are up-to-date.
 
 1. Sync your fork to the upstream repository:
 
-    ```sh
+    ```bash
     git checkout main
     git fetch upstream
     git rebase upstream/main
@@ -108,7 +123,7 @@ to the code, make sure your fork and development environment are up-to-date.
 
 2. Update your project dependencies:
 
-    ```sh
+    ```bash
     uv sync
     ```
 
@@ -116,7 +131,7 @@ to the code, make sure your fork and development environment are up-to-date.
 
 If your change requires a new dependency, add it as follows:
 
-```sh
+```bash
 uv add <dependency>
 ```
 
@@ -148,7 +163,7 @@ Documentation updates should be made in `docs/source`. To preview
 changes:
 
 ```bash
-uv run --group docs sphinx-autobuild docs/source docs/_build/html
+uv run nox -s docs_serve
 ```
 
 The output of the above command provides a URL for viewing the documentation via a local server (usually [http://127.0.0.1:8000](http://127.0.0.1:8000)).
@@ -162,9 +177,7 @@ Please ensure the following are true before creating the PR:
 
 - Your change is covered by tests, if applicable
 - Project documentation is updated, if applicable
-- All tests pass (`uv run pytest`)
-- All pre-commit checks are successful
-(these checks will run automatically as you make commits)
+- All nox checks pass: `uv run nox --tags checks`
 - The `[Unreleased]` section of [CHANGELOG.md](CHANGELOG.md) contains a
 description of your change.
 

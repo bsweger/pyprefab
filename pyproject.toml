@@ -6,17 +6,24 @@ authors = [
 ]
 license = "MIT"
 readme = 'README.md'
-requires-python = '>=3.9,<3.14'
+requires-python = '>=3.9'
 classifiers = [
-    'Programming Language :: Python :: 3',
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
 ]
+
 dynamic = ['version']
 
 dependencies = [
     'structlog',
     'rich',
-    "typer",
-    "jinja2>=3.1.5",
+    'typer',
+    'jinja2>=3.1.5',
 ]
 
 [dependency-groups]
@@ -25,6 +32,7 @@ dev = [
     'coverage',
     'freezegun',
     'mypy',
+    'nox>=2025.05.01',
     'pre-commit',
     'pytest',
     "pytest-random-order>=1.1.1",
@@ -80,6 +88,9 @@ omit = [
     # omit jinja templates from coverage reports
     '*/templates/*'
 ]
+
+[tool.mypy]
+ignore_missing_imports = true
 
 [tool.ruff]
 line-length = 120
