@@ -24,6 +24,7 @@ project uses [Semantic Versioning](https://semver.org/).
 
 - Add nox to the project and integrate it with GitHub actions
 - CI now runs test suite against Windows and MacOS in addition to Ubuntu
+- Add a new GitHub workflow to perform scheduled checks
 
 ## 0.5.5
 
