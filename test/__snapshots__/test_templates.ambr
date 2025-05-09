@@ -383,120 +383,36 @@
   
   '''
 # ---
-# name: test_gh_workflows[publish-pypi-test.yaml]
-  '''
-  # .github/workflows/publish-pypi-test.yml
-  
-  # Publish to test-pypi after a merge to the repository's main branch
-  
-  # This workflow uses PyPI's trusted publisher feature to publish the package
-  # to test-pypi. The trusted publisher enables test-pypi updates without needing
-  # to store secrets in the repository.
-  # There are two prerequisites:
-  # 1. Create a GitHub environment named `test-pypi` in the project's repository
-  # (if you use a different environment name, change the environment name below to match)
-  # 2. Set up a trusted publisher on test PyPI for the project
-  # Note: the test.pypi.org url in the publish-to-testpypi job should be set to the name of
-  # your package on test PyPI.
-  
-  # Full documentation about this process:
-  # https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
-  
-  
-  name: Publish to test PyPI
-  
-  on:
-    push:
-      branches:
-        - main
-  
-  permissions:
-    contents: read
-  
-  jobs:
-    build:
-      name: Build distribution 📦
-      runs-on: ubuntu-latest
-      outputs:
-        # set publish_to_testpypi = true to publish to test PyPI after
-        # pushing to main (requires trusted publisher setup on test PyPI)
-        publish_to_testpypi: false
-  
-      steps:
-        - name: Checkout 🛎️
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
-            persist-credentials: false
-  
-        - name: Set up Python 🐍
-          uses: actions/setup-python@v5
-  
-        - name: Install uv 🌟
-          uses: astral-sh/setup-uv@22695119d769bdb6f7032ad67b9bca0ef8c4a174 #v5.4.0
-          with:
-            version: ">=0.0.1"
-  
-        - name: Build package for distribution 🛠️
-          run: |
-            uv build
-  
-        - name: Upload distribution packages 📤
-          uses: actions/upload-artifact@v4
-          with:
-            name: package-distribution
-            path: dist/
-  
-    publish-to-testpypi:
-      name: Publish Python distribution to test PyPI
-      needs:
-      - build
-      runs-on: ubuntu-latest
-      if: ${{ needs.build.outputs.publish_to_testpypi == 'true' }}
-      environment:
-        name: pypi-test
-        url: https://test.pypi.org/p/transporter_logs
-      permissions:
-         id-token: write  # needed for trusted publishing (i.e., OIDC)
-  
-      steps:
-      - name: Download distribution artifacts 📥
-        uses: actions/download-artifact@v4
-        with:
-          name: package-distribution
-          path: dist/
-      - name: Publish distribution to test PyPI 🚀
-        uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc #v1.12.4
-        with:
-          repository-url: https://test.pypi.org/legacy/
-  
-  '''
-# ---
 # name: test_gh_workflows[publish-pypi.yaml]
   '''
   # .github/workflows/publish-pypi.yml
   
   # This workflow uses PyPI's trusted publisher feature to publish the package
-  # to PyPI. The trusted publisher enables PyPI updates without needing
-  # to store secrets in the repository.
+  # to PyPI and TestPyPI. The trusted publisher enables PyPI updates without
+  # needing to store secrets in the repository.
   # There are three prerequisites:
-  # 1. Create a GitHub environment named `pypi` in the project's repository
-  # (if you use a different environment name, change the environment name below to match)
-  # 2. Add a "required reviewers" deployment protection rule to the above environment
-  # 3. Set up a trusted publisher on PyPI for the project
-  # Note: the pypi.org url in the publish-to-pypi job should be set to the name of
-  # your package on PyPI.
+  # 1. Create two GitHub environments named `pypi` and `test-pypi` in the
+  # project's repository
+  # (if you use a different environment names, change the environment names
+  # below to match)
+  # 2. Add a "required reviewers" deployment protection rule to the
+  # `pypi` environment
+  # 3. Set up a trusted publisher on PyPI and TestPyPI for the project
+  # Note: the pypi.org and test.pypi.org urls in this workflow
+  # should be set to the name of your package on PyPI.
   
   # Full documentation about this process:
   # https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
   
-  name: Publish to PyPI and create GitHub release
+  name: Publish to PyPI and TestPyPI and create GitHub release
   
   on:
     push:
       tags:
         # only run workflow for tags in release format
         - "v[0-9]+.[0-9]+.[0-9]+"
+      branches:
+        - main
   
   permissions:
     contents: read
@@ -509,6 +425,7 @@
         # set publish_to_pypi = true to publish to PyPI after
         # tagging a release (requires trusted publisher setup on PyPI)
         publish_to_pypi: false
+        publish_to_testpypi: false
   
       steps:
         - name: Checkout 🛎️
@@ -537,6 +454,7 @@
   
     publish-to-pypi:
       name: Publish Python distribution to PyPI
+      if: startsWith(github.ref, 'refs/tags/')  # only publish to PyPI on tag pushes
       needs:
       - build
       runs-on: ubuntu-latest
@@ -597,6 +515,29 @@
           gh release upload
           "$GITHUB_REF_NAME" dist/**
           --repo "$GITHUB_REPOSITORY"
+  
+    publish-to-testpypi:
+      name: Publish Python distribution to test PyPI
+      needs:
+      - build
+      runs-on: ubuntu-latest
+      if: ${{ needs.build.outputs.publish_to_testpypi == 'true' }}
+      environment:
+        name: pypi-test
+        url: https://test.pypi.org/p/transporter_logs
+      permissions:
+         id-token: write  # needed for trusted publishing (i.e., OIDC)
+  
+      steps:
+      - name: Download distribution artifacts 📥
+        uses: actions/download-artifact@v4
+        with:
+          name: package-distribution
+          path: dist/
+      - name: Publish distribution to test PyPI 🚀
+        uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc #v1.12.4
+        with:
+          repository-url: https://test.pypi.org/legacy/
   
   '''
 # ---

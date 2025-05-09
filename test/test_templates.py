@@ -83,7 +83,6 @@ def test_src_dir(cli_output, snapshot, src_file):
     'gh_workflow_file',
     [
         'ci.yaml',
-        'publish-pypi-test.yaml',
         'publish-pypi.yaml',
     ],
 )

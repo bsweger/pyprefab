@@ -19,7 +19,7 @@ The scaffolding includes:
 [ruff](https://docs.astral.sh/ruff/) for linting (optional)
 - GitHub workflow that automatically runs code checks, tests, and a test
 coverage report
-- GitHub workflows to publish the package to TestPyPI and PyPI
+- GitHub workflow for publishing the package to PyPI
 
 ## Quickstart
 
