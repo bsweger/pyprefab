@@ -10,6 +10,7 @@ project uses [Semantic Versioning](https://semver.org/).
 ### Added
 
 - Add a `--version` parameter to the pyprefab CLI
+- New callback function to normalize user-supplied package location
 
 ### Changed
 
