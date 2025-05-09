@@ -63,7 +63,7 @@ def coverage(session) -> None:
 
 
 @nox.session(python=PYTHON_VERSIONS)
-def test_install(session: nox.Session) -> None:
+def test_dev_install(session: nox.Session) -> None:
     """Install as a package and run tests."""
     session.run_install(
         'uv',
