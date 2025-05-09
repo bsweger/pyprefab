@@ -78,7 +78,7 @@ def test_install(session: nox.Session) -> None:
     session.run('pytest')
 
 
-@nox.session(python=PYTHON_VERSIONS, tags=['checks', 'ci'])
+@nox.session(python=PYTHON_LATEST, tags=['checks', 'ci'])
 def docs(session: nox.Session) -> None:
     """Build the documentation."""
     session.run_install(
@@ -87,13 +87,13 @@ def docs(session: nox.Session) -> None:
         '--active',
         '--group=docs',
         '--frozen',
-        #'--quiet',
+        '--quiet',
         f'--python={session.virtualenv.location}',
     )
     session.run('sphinx-build', '-W', '-b', 'html', 'docs/source', 'docs/_build/html')
 
 
-@nox.session
+@nox.session(default=False)
 def docs_serve(session: nox.Session) -> None:
     """Serve the documentation locally."""
     session.run_install(
@@ -102,6 +102,7 @@ def docs_serve(session: nox.Session) -> None:
         '--active',
         '--group=docs',
         '--frozen',
+        '--quiet',
         f'--python={session.virtualenv.location}',
     )
     session.run('sphinx-autobuild', 'docs/source', 'docs/_build/html', external=True)

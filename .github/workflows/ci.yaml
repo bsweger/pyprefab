@@ -21,7 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       nox_tests: ${{ steps.set-matrix.outputs.nox_tests }}
-      nox_docs: ${{ steps.set-matrix.outputs.nox_docs }}
 
     steps:
       - name: Checkout 🛎️
@@ -37,7 +36,6 @@ jobs:
         shell: bash
         run: |
           echo nox_tests=$(uvx nox --session tests --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
-          echo nox_docs=$(uvx nox --session docs --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
 
   lint:
     name: Lint and type check
@@ -75,8 +73,7 @@ jobs:
         # The coverage session runs the test suite using the latest stable
         # python version and uses that output to generate the coverage report
         # (as opposed to merging coverage reports from all python versions)
-        run: |
-          uvx nox --session coverage >> $GITHUB_STEP_SUMMARY
+        run: uvx nox --session coverage >> $GITHUB_STEP_SUMMARY
 
       - name: Upload HTML report if coverage check fails 📤
         uses: actions/upload-artifact@v4
@@ -92,6 +89,7 @@ jobs:
     strategy:
       matrix:
         nox_tests: ${{ fromJson(needs.generate-nox-sessions.outputs.nox_tests) }}
+        os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout 🛎️
@@ -107,11 +105,10 @@ jobs:
 
   doc_build:
     name: Test docs build
-    needs: generate-nox-sessions
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        nox_tests: ${{ fromJson(needs.generate-nox-sessions.outputs.nox_docs) }}
+        os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout 🛎️
@@ -122,5 +119,5 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
 
-      - name: Run nox docs session ${{ matrix.nox_docs }} 📜
-        run: uvx nox --session docs ${{ matrix.nox_docs }}
+      - name: Run nox docs session 📜
+        run: uvx nox --session docs

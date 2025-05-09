@@ -23,6 +23,7 @@ project uses [Semantic Versioning](https://semver.org/).
 ### Internal
 
 - Add nox to the project and integrate it with GitHub actions
+- CI now runs test suite against Windows and MacOS in addition to Ubuntu
 
 ## 0.5.5
 
