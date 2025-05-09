@@ -92,6 +92,7 @@ jobs:
     strategy:
       matrix:
         nox_tests: ${{ fromJson(needs.generate-nox-sessions.outputs.nox_tests) }}
+        os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout 🛎️
