@@ -78,7 +78,7 @@ def test_install(session: nox.Session) -> None:
     session.run('pytest')
 
 
-@nox.session(python=PYTHON_VERSIONS, tags=['checks', 'ci'])
+@nox.session(python=PYTHON_LATEST, tags=['checks', 'ci'])
 def docs(session: nox.Session) -> None:
     """Build the documentation."""
     session.run_install(
