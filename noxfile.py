@@ -78,6 +78,12 @@ def test_dev_install(session: nox.Session) -> None:
     session.run('pytest')
 
 
+@nox.session(python=PYTHON_VERSIONS)
+def test_pypi_install(session: nox.Session) -> None:
+    """Install as a package and run tests."""
+    session.run_install('uv', 'pip', 'install', 'pyprefab')
+
+
 @nox.session(python=PYTHON_LATEST, tags=['checks', 'ci'])
 def docs(session: nox.Session) -> None:
     """Build the documentation."""

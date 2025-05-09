@@ -18,7 +18,8 @@ jobs:
     name: Get nox session lists to use for matrices in other jobs
     runs-on: ubuntu-latest
     outputs:
-      nox_test_install: ${{ steps.set-matrix.outputs.nox_test_install }}
+      nox_test_dev_install: ${{ steps.set-matrix.outputs.nox_test_dev_install }}
+      nox_test_pypi_install: ${{ steps.set-matrix.outputs.nox_test_pypi_install }}
 
     steps:
       - name: Checkout 🛎️
@@ -34,6 +35,7 @@ jobs:
         shell: bash
         run: |
           echo nox_test_dev_install=$(uvx nox --session test_dev_install --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
+          echo nox_test_pypi_install=$(uvx nox --session test_pypi_install --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
 
   # Ensure package is installable from main branch
   test_dev_install:
@@ -56,3 +58,25 @@ jobs:
 
       - name: Run nox test_dev_install session ${{ matrix.nox_test_dev_install }} 🧪
         run: uvx nox --session ${{ matrix.nox_test_dev_install }}
+
+  # Ensure package is installable via PyPI
+  test_pypi_install:
+    name: Test PyPI install
+    needs: generate-nox-sessions
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nox_test_pypi_install: ${{ fromJson(needs.generate-nox-sessions.outputs.nox_test_pypi_install) }}
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install uv 🌟
+        uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5.4.1
+
+      - name: Run nox test_pypi_install session ${{ matrix.nox_test_pypi_install }} 🧪
+        run: uvx nox --session ${{ matrix.nox_test_pypi_install }}
