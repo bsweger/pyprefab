@@ -1,7 +1,6 @@
 """Command-line interface for the pyprefab package."""
 
 import os
-import pathlib
 import shutil
 import sys
 from datetime import datetime
@@ -53,16 +52,23 @@ def validate_package_name(value: str) -> str:
         return value
 
 
-def validate_package_dir(value: Path) -> str:
+def validate_package_dir(value: Path) -> Path:
     """Validate the target directory of the new package."""
-    value = value.expanduser().resolve(strict=False)
+    # use os.path instead of pathlib for the next two checks because Windows
+    # Pathlib objects don't have expanduser and resolve methods
+    target_dir_str = os.path.expanduser(value)
+    target_dir = Path(os.path.normpath(target_dir_str))
 
-    if isinstance(value, pathlib.PureWindowsPath) and os.path.isreserved(value):
-        raise PyprefabBadParameter(f'{value} is a reserved name')
-    if value.is_file():
-        raise PyprefabBadParameter(f'{value} is a file, not a directory')
+    if target_dir.is_file():
+        raise PyprefabBadParameter(f'{str(target_dir)} is a file, not a directory')
 
-    return value
+    # Target directory should be empty (with a few exceptions)
+    allow_existing = ['.git']
+    exceptions = [allow for allow in allow_existing if (target_dir / allow).is_dir()]
+    if target_dir.exists() and sum(1 for item in target_dir.iterdir()) - len(exceptions) > 0:
+        raise PyprefabBadParameter(f'{str(target_dir)} is not an empty directory')
+
+    return target_dir
 
 
 def version_callback(value: bool):
@@ -163,24 +169,8 @@ def main(
     """
     🐍 Create Python package boilerplate 🐍
     """
-    # If there is already content in the package directory, exit (unless
-    # the directory is on the exception list below)
-    allow_existing = ['.git']
-    exceptions = [allow for allow in allow_existing if (package_dir / allow).is_dir()]
-
-    if package_dir.exists() and sum(1 for item in package_dir.iterdir()) - len(exceptions) > 0:
-        err_console = Console(stderr=True)
-        err_console.print(
-            Panel.fit(
-                f'⛔️ Package not created: {str(package_dir)} is not an empty directory',
-                title='pyprefab error',
-                border_style='red',
-            )
-        )
-        raise typer.Exit(1)
-
     templates_dir = Path(__file__).parent / 'templates'
-    target_dir = package_dir or Path.cwd() / name
+    target_dir = package_dir
 
     current_year = datetime.now().year
 
