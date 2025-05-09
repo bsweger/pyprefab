@@ -2,13 +2,15 @@
 # uses trusted publishing to publish the package to PyPI and create a GitHub
 # release as described here:
 # https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
-name: Publish to PyPI and create GitHub release
+name: Publish to TestPyPI and PyPI and create GitHub release
 
 on:
   push:
     tags:
       # only run workflow for tags in release format
       - "v[0-9]+.[0-9]+.[0-9]+"
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -45,6 +47,7 @@ jobs:
 
   publish-to-pypi:
     name: Publish Python distribution to PyPI
+    if: startsWith(github.ref, 'refs/tags/')  # only publish to PyPI on tag pushes
     needs:
     - build
     runs-on: ubuntu-latest
@@ -65,7 +68,7 @@ jobs:
 
   github-release:
     name: >-
-      Sign the Python distribution with Sigstore
+      Sign the Python distributions with Sigstore
       and upload them to GitHub Release
     needs:
     - publish-to-pypi
@@ -104,3 +107,25 @@ jobs:
         gh release upload
         "$GITHUB_REF_NAME" dist/**
         --repo "$GITHUB_REPOSITORY"
+
+  publish-to-testpypi:
+    name: Publish Python distribution to test PyPI
+    needs:
+    - build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi-test
+      url: https://test.pypi.org/p/pyprefab
+    permissions:
+       id-token: write  # needed for trusted publishing (i.e., OIDC)
+
+    steps:
+    - name: Download distribution artifacts 📥
+      uses: actions/download-artifact@v4
+      with:
+        name: package-distribution
+        path: dist/
+    - name: Publish distribution to test PyPI 🚀
+      uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc #v1.12.4
+      with:
+        repository-url: https://test.pypi.org/legacy/
