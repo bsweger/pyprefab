@@ -1,5 +1,7 @@
 """Command-line interface for the pyprefab package."""
 
+import os
+import pathlib
 import shutil
 import sys
 from datetime import datetime
@@ -49,6 +51,18 @@ def validate_package_name(value: str) -> str:
         raise PyprefabBadParameter(msg)
     else:
         return value
+
+
+def validate_package_dir(value: Path) -> str:
+    """Validate the target directory of the new package."""
+    value = value.expanduser().resolve(strict=False)
+
+    if isinstance(value, pathlib.PureWindowsPath) and os.path.isreserved(value):
+        raise PyprefabBadParameter(f'{value} is a reserved name')
+    if value.is_file():
+        raise PyprefabBadParameter(f'{value} is a file, not a directory')
+
+    return value
 
 
 def version_callback(value: bool):
@@ -131,6 +145,7 @@ def main(
             '--dir',
             help='Directory that will contain the package',
             prompt=typer.style('Package directory 🎬', fg=typer.colors.MAGENTA, bold=True),
+            callback=validate_package_dir,
         ),
     ] = Path.cwd(),
     docs: Annotated[
