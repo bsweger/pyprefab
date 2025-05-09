@@ -93,7 +93,7 @@ def docs(session: nox.Session) -> None:
     session.run('sphinx-build', '-W', '-b', 'html', 'docs/source', 'docs/_build/html')
 
 
-@nox.session
+@nox.session(default=False)
 def docs_serve(session: nox.Session) -> None:
     """Serve the documentation locally."""
     session.run_install(
