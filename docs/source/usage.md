@@ -47,7 +47,6 @@ with the following files in `trek/code/holodeck`:
 ├── .github
 │   └── workflows
 │       ├── ci.yaml
-│       ├── publish-pypi-test.yaml
 │       └── publish-pypi.yaml
 ├── .gitignore
 ├── .pre-commit-config.yaml
@@ -83,7 +82,6 @@ with the new package.
 ├── .github
 │   └── workflows
 │       ├── ci.yaml
-│       ├── publish-pypi-test.yaml
 │       └── publish-pypi.yaml
 ├── .gitignore
 ├── .pre-commit-config.yaml
@@ -214,9 +212,8 @@ directory:
 
 - `ci.yaml`: runs tests against multiple versions of python, checks test
   coverage, and runs a linter check using [ruff](https://astral.sh/ruff)
-- `publish-pypi-test.yaml`: publishes the package to
-  [test PyPi](https://test.pypi.org) (setup required, see comments in the file)
-- `publish-pypi.yaml`: publishes the package to [PyPI](https://pypi.org)
+- `publish-pypi.yaml`: publishes the package to
+  [test PyPi](https://test.pypi.org) and to [PyPI](https://pypi.org)
   (setup required, see comments in the file)
 
 :::{tip}
