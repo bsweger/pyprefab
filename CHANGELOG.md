@@ -14,10 +14,10 @@ project uses [Semantic Versioning](https://semver.org/).
 ### Changed
 
 - Update CONTRIBUTING.md to reflect the new nox setup.
-
 - In interactive mode, Pyprefab now returns an immediate error message
-  for invalid package names instead of waiting until the rest of the prompts
-  are filled out
+  for invalid package names instead of waiting until the rest of the prompts are filled out
+- Consolidate pypi and test pypi publishing into a single GitHub
+  workflow
 
 ### Internal
 
