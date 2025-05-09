@@ -1,5 +1,7 @@
 """Test the pyprefab cli."""
 
+import os
+from pathlib import Path
 from unittest.mock import patch
 
 import pytest
@@ -88,6 +90,39 @@ def test_app_invalid_package_name(tmp_path):
     result = runner.invoke(
         app,
         ['--name', 'pytest-package', '--author', 'Py Test', '--dir', tmp_path],
+        input='This is a test package\n',
+    )
+    assert result.exit_code != 0
+
+
+def test_app_package_dir_callback(monkeypatch, tmp_path):
+    """App should fail if supplied package_dir is reserved."""
+    # override the current home directory (for testing ~, etc.)
+    envs = {'HOME': str(tmp_path), 'USERPROFILE': str(tmp_path)}
+    monkeypatch.setattr(os, 'environ', envs)
+
+    package_dir = '~/test_package_dir'
+    runner = CliRunner()
+    result = runner.invoke(app, ['--name', 'pytest_package', '--author', 'Py Test', '--dir', package_dir])
+    assert result.exit_code == 0
+
+
+def test_app_package_dir_file(monkeypatch, tmp_path):
+    """App should fail if supplied package_dir is a file."""
+    # override the current home directory (for testing ~, etc.)
+    envs = {'HOME': str(tmp_path), 'USERPROFILE': str(tmp_path)}
+    monkeypatch.setattr(os, 'environ', envs)
+
+    # set up test by creating an existing file
+    package_dir = '~/../test_package_dir//textfile.txt'
+    normalized_dir = Path(package_dir).expanduser().resolve()
+    normalized_dir.parent.mkdir(parents=True, exist_ok=True)
+    normalized_dir.touch()
+
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        ['--name', 'pytest_package', '--author', 'Py Test', '--dir', package_dir],
         input='This is a test package\n',
     )
     assert result.exit_code != 0
