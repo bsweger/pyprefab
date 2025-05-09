@@ -87,7 +87,7 @@ def docs(session: nox.Session) -> None:
         '--active',
         '--group=docs',
         '--frozen',
-        #'--quiet',
+        '--quiet',
         f'--python={session.virtualenv.location}',
     )
     session.run('sphinx-build', '-W', '-b', 'html', 'docs/source', 'docs/_build/html')
@@ -102,6 +102,7 @@ def docs_serve(session: nox.Session) -> None:
         '--active',
         '--group=docs',
         '--frozen',
+        '--quiet',
         f'--python={session.virtualenv.location}',
     )
     session.run('sphinx-autobuild', 'docs/source', 'docs/_build/html', external=True)
