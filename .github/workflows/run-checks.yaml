@@ -83,8 +83,7 @@ jobs:
 
   # Test build and deploy to Test PyPI
   test_pypi_build_deploy:
-    name: Test build and deploy to Test PyPI
-    runs-on: ubuntu-latest
     uses: ./.github/workflows/publish-pypi.yaml
+    name: Test build and deploy to Test PyPI
     permissions:
        id-token: write  # required for PyPI trusted publishing
