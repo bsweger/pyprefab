@@ -30,8 +30,6 @@ jobs:
 
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca #v6.0.1
-        with:
-          version: "0.7.3"
 
       - name: Set nox session matrices 🧩
         id: set-matrix
@@ -51,8 +49,6 @@ jobs:
 
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca #v6.0.1
-        with:
-          version: "0.7.3"
 
       - name: Lint 🧹
         run: uvx nox --session lint
@@ -72,8 +68,6 @@ jobs:
 
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca #v6.0.1
-        with:
-          version: "0.7.3"
 
       - name: Generate coverage report 📊
         # The coverage session runs the test suite using the latest stable
@@ -105,8 +99,6 @@ jobs:
 
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca #v6.0.1
-        with:
-          version: "0.7.3"
 
       - name: Run nox test session ${{ matrix.nox_tests }} 🧪
         run: uvx nox --session ${{ matrix.nox_tests }}
@@ -126,8 +118,6 @@ jobs:
 
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca #v6.0.1
-        with:
-          version: "0.7.3"
 
       - name: Run nox docs session 📜
         run: uvx nox --session docs
