@@ -82,9 +82,27 @@ jobs:
         run: uvx nox --session ${{ matrix.nox_test_pypi_install }}
 
   # Test build and deploy to Test PyPI
-  test_pypi_build_deploy:
-    uses: ./.github/workflows/publish-pypi.yaml
-    name: Test build and deploy to Test PyPI
-    permissions:
-       contents: write
-       id-token: write # required for PyPI trusted publishing
+  test_package_build:
+    name: Test build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python 🐍
+        uses: actions/setup-python@v5
+
+      - name: Install uv 🌟
+        uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca #v6.0.1
+
+      - name: Build package for distribution 🛠️
+        run: uv build
+
+      - name: Upload distribution packages 📤
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-distribution
+          path: dist/
