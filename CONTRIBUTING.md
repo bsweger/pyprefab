@@ -188,3 +188,31 @@ The PR itself should:
 in the description.
 - Have a description that includes any other information or context that will
 help a code reviewer understand your changes.
+
+## Releasing to PyPI (maintainers only)
+
+Use the instructions below to create a new pyprefab release and
+publish it to PyPI. The directions assume that your git client is set up to
+[sign commits](https://docs.github.com/en/authentication/managing-commit-signature-verification/telling-git-about-your-signing-key)
+by default.
+
+This process should be done on a local machine, since
+the web version of GitHub doesn't support creating signed tags.
+
+1. Merge an update to [CHANGELOG.md](CHANGELOG.md),
+   changing *Unreleased* to the new version.
+2. From the repo's main branch, create a signed tag for the release number
+   and add a message when prompted. For example:
+
+    ```bash
+    git tag -s v0.5.6
+    ```
+
+3. Push the tag upstream:
+
+   ```bash
+   git push origin
+   ```
+
+Once the tag is pushed, the `publish-pypi.yaml` workflow will build the package,
+publish it to PyPI (after manual approval), and create a GitHub release.
