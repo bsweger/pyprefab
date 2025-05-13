@@ -38,3 +38,8 @@ python -m pip install pyprefab
 
 python -m pyprefab
 ```
+
+## Project setup
+
+See [CONTRIBUTING.MD](CONTRIBUTING.md) for information on setting up
+a local development environment for pyprefab.
