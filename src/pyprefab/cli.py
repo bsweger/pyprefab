@@ -136,6 +136,7 @@ def main(
         typer.Option(
             help='Package author',
             prompt=typer.style('Package author 👤', fg=typer.colors.MAGENTA, bold=True),
+            show_default=False,
         ),
     ] = 'None',
     description: Annotated[
@@ -143,6 +144,7 @@ def main(
         typer.Option(
             help='Package description',
             prompt=typer.style('Package description 📝', fg=typer.colors.MAGENTA, bold=True),
+            show_default=False,
         ),
     ] = 'None',
     package_dir: Annotated[
@@ -151,23 +153,31 @@ def main(
             '--dir',
             help='Directory that will contain the package',
             prompt=typer.style('Package directory 🎬', fg=typer.colors.MAGENTA, bold=True),
+            show_default='current directory',
             callback=validate_package_dir,
         ),
     ] = Path.cwd(),
     docs: Annotated[
         Optional[bool],
         typer.Option(
+            '--docs',
             help='Include Sphinx documentation files',
             prompt=typer.style('Include Sphinx docs? 📄', fg=typer.colors.MAGENTA, bold=True),
         ),
     ] = False,
     version: Annotated[
         Optional[bool],
-        typer.Option('--version', callback=version_callback, is_eager=True),
+        typer.Option('--version', help='Show the version and exit', callback=version_callback, is_eager=True),
     ] = None,
 ):
     """
-    🐍 Create Python package boilerplate 🐍
+    Pyprefab generates the "get started quickly" scaffolding for a new
+    Python package.
+
+    To get started, type "pyprefab" and follow the prompts.
+
+    Full documentation: https://bsweger.github.io/pyprefab/
+
     """
     templates_dir = Path(__file__).parent / 'templates'
     target_dir = package_dir
