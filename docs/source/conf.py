@@ -28,6 +28,7 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
     'sphinx_copybutton',
+    'sphinxcontrib.typer',
     'sphinxext.opengraph',
     'myst_parser',
 ]
