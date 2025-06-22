@@ -100,9 +100,7 @@ html_static_path = ['_static']
 # further. For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    # 'logo': 'beepboop.png',
-    # 'logo_name': True,
-    'description': f'Simple CLI for Python project scaffolding\n{release}',
+    'description': f'Small CLI for Python project scaffolding\n{release}',
     'github_user': 'bsweger',
     'github_repo': 'pyprefab',
     'github_banner': True,
