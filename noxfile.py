@@ -67,13 +67,9 @@ def test_dev_install(session: nox.Session) -> None:
     """Install as a package and run tests."""
     session.run_install(
         'uv',
-        'pip',
-        'install',
-        '-e',
-        '.',
+        'sync',
+        '--active',
         '--group=dev',
-        '--quiet',
-        f'--python={session.virtualenv.location}',
     )
     session.run('pytest')
 
