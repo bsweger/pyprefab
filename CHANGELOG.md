@@ -11,6 +11,10 @@ project uses [Semantic Versioning](https://semver.org/).
 
 - Improvements to CLI help text
 
+### Internal
+
+- Converted format of the usage documentation from markdown to Sphinx
+
 ## 0.5.6
 
 ### Added
