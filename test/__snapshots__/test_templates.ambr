@@ -391,7 +391,7 @@
   # to PyPI and TestPyPI. The trusted publisher enables PyPI updates without
   # needing to store secrets in the repository.
   # There are three prerequisites:
-  # 1. Create two GitHub environments named `pypi` and `test-pypi` in the
+  # 1. Create two GitHub environments named `pypi` and `pypi-test` in the
   # project's repository
   # (if you use a different environment names, change the environment names
   # below to match)
