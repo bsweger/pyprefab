@@ -5,7 +5,7 @@ All notable changes to `pyprefab` are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com), and the
 project uses [Semantic Versioning](https://semver.org/).
 
-## Unreleased
+## 0.5.7
 
 ### Changed
 
@@ -14,6 +14,10 @@ project uses [Semantic Versioning](https://semver.org/).
 ### Internal
 
 - Converted format of the usage documentation from markdown to Sphinx
+
+### Fixed
+
+- Fix typo and boolean handling in the publish-pypi template
 
 ## 0.5.6
 
