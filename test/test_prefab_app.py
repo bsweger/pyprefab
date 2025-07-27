@@ -24,6 +24,14 @@ def test_lint(cli_output):
     assert result.returncode == 0
 
 
+def test_format(cli_output):
+    """Files created by CLI should meet formatting standards."""
+    package_path, cli_result = cli_output
+
+    result = subprocess.run(['ruff', 'format', '--check', package_path], capture_output=True, text=True)
+    assert result.returncode == 0
+
+
 def test_logging(cli_output):
     """Generated Python package should have functional logging."""
     package_path, cli_result = cli_output
