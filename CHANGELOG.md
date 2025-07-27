@@ -7,6 +7,10 @@ project uses [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+- Make improvements to logging-related portion of the templates
+
 ### Internal
 
 - Move log configuration to __init__.py
