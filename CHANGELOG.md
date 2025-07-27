@@ -5,6 +5,12 @@ All notable changes to `pyprefab` are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com), and the
 project uses [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+
+### Internal
+
+- Move log configuration to __init__.py
+
 ## 0.5.7
 
 ### Changed
