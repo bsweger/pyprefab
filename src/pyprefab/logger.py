@@ -3,9 +3,9 @@ import sys
 import structlog
 
 
-def setup_logging():
+def configure_logging():
     shared_processors = [
-        structlog.processors.TimeStamper(fmt='%Y-%m-%d %H:%M:%S'),
+        structlog.processors.TimeStamper(fmt='iso', utc=True),
         structlog.processors.add_log_level,
     ]
 
