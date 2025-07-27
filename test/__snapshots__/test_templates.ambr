@@ -948,6 +948,11 @@
   '''
   """transporter_logs initialization."""
   
+  from transporter_logs.logger import configure_logging
+  
+  # configure structlog
+  configure_logging()
+  
   '''
 # ---
 # name: test_src_dir[app.py]
@@ -956,9 +961,6 @@
   from rich.console import Console
   from rich.panel import Panel
   
-  from transporter_logs.logging import setup_logging
-  
-  setup_logging()
   logger = structlog.get_logger()
   
   
@@ -984,22 +986,27 @@
   if __name__ == '__main__':
       main()
   
-  
   '''
 # ---
-# name: test_src_dir[logging.py]
+# name: test_src_dir[logger.py]
   '''
-  """transporter_logs logging configuration."""
+  """transporter_logs logging configuration.
+  
+  This module uses structlog, a third-party library that enables
+  straightforward and flexibilible structured logging in Python.
+  https://www.structlog.org/en/stable/
+  """
   
   import sys
   
   import structlog
   
   
-  def setup_logging():
+  def configure_logging():
       shared_processors = [
-          structlog.processors.TimeStamper(fmt='%Y-%m-%d %H:%M:%S'),
+          structlog.processors.TimeStamper(fmt='iso', utc=True),
           structlog.processors.add_log_level,
+          structlog.processors.CallsiteParameterAdder([structlog.processors.CallsiteParameter.FILENAME]),
       ]
   
       if sys.stderr.isatty():
