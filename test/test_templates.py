@@ -68,7 +68,7 @@ def test_pyproject_no_docs(cli_output_no_docs, snapshot):
     [
         '__init__.py',
         'app.py',
-        'logging.py',
+        'logger.py',
     ],
 )
 def test_src_dir(cli_output, snapshot, src_file):

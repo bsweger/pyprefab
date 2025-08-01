@@ -1,1 +1,6 @@
 """{{ package_name }} initialization."""
+
+from {{ package_name }}.logger import configure_logging
+
+# configure structlog
+configure_logging()

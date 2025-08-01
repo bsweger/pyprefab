@@ -18,9 +18,7 @@ from typing_extensions import Annotated
 
 from pyprefab import __version__
 from pyprefab.exceptions import PyprefabBadParameter
-from pyprefab.logging import setup_logging
 
-setup_logging()
 logger = structlog.get_logger()
 
 cli_theme = Theme(
