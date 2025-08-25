@@ -43,7 +43,7 @@ jobs:
           uv run --group docs sphinx-build docs/source docs/_build/html --fresh-env --fail-on-warning
 
       - name: Upload artifact 📤
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           name: static-docs
           path: docs/_build/html
