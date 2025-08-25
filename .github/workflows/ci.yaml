@@ -29,7 +29,7 @@ jobs:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@e92bafb6253dcd438e0484186d7669ea7a8ca1cc #v6.4.3
+        uses: astral-sh/setup-uv@4959332f0f014c5280e7eac8b70c90cb574c9f9b #v6.6.0
 
       - name: Set nox session matrices 🧩
         id: set-matrix
@@ -48,7 +48,7 @@ jobs:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@e92bafb6253dcd438e0484186d7669ea7a8ca1cc #v6.4.3
+        uses: astral-sh/setup-uv@4959332f0f014c5280e7eac8b70c90cb574c9f9b #v6.6.0
 
       - name: Lint 🧹
         run: uvx nox --session lint
@@ -67,7 +67,7 @@ jobs:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@e92bafb6253dcd438e0484186d7669ea7a8ca1cc #v6.4.3
+        uses: astral-sh/setup-uv@4959332f0f014c5280e7eac8b70c90cb574c9f9b #v6.6.0
 
       - name: Generate coverage report 📊
         # The coverage session runs the test suite using the latest stable
@@ -98,7 +98,7 @@ jobs:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@e92bafb6253dcd438e0484186d7669ea7a8ca1cc #v6.4.3
+        uses: astral-sh/setup-uv@4959332f0f014c5280e7eac8b70c90cb574c9f9b #v6.6.0
 
       - name: Run nox test session ${{ matrix.nox_tests }} 🧪
         run: uvx nox --session ${{ matrix.nox_tests }}
@@ -117,7 +117,7 @@ jobs:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@e92bafb6253dcd438e0484186d7669ea7a8ca1cc #v6.4.3
+        uses: astral-sh/setup-uv@4959332f0f014c5280e7eac8b70c90cb574c9f9b #v6.6.0
 
       - name: Run nox docs session 📜
         run: uvx nox --session docs
