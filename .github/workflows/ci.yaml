@@ -76,7 +76,7 @@ jobs:
         run: uvx nox --session coverage >> $GITHUB_STEP_SUMMARY
 
       - name: Upload HTML report if coverage check fails 📤
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
             name: html-cov-report
             path: htmlcov

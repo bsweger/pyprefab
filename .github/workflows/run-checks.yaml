@@ -110,7 +110,7 @@ jobs:
         run: uv build
 
       - name: Upload distribution packages 📤
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: package-distribution
           path: dist/
