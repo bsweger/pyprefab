@@ -1,8 +1,5 @@
 """Test pyprefab app configuration."""
 
-import os
-from unittest import mock
-
 import pytest
 
 from pyprefab.config import PyprefabConfig
@@ -11,14 +8,9 @@ from pyprefab.config import PyprefabConfig
 @pytest.fixture
 def setenv(monkeypatch):
     """Fixture to set environment variables."""
-    with mock.patch.dict(os.environ, clear=True):
-        envvars = {
-            'PYPREFAB_TESTY_LEVELS_GREETING': 'HOWDY',
-            'PYPREFAB_LOGGING_LEVEL': 'INVALIDLOGLEVEL',
-        }
-        for k, v in envvars.items():
-            monkeypatch.setenv(k, v)
-        yield
+    monkeypatch.setenv('PYPREFAB_TESTY_LEVELS_GREETING', 'HOWDY')
+    monkeypatch.setenv('PYPREFAB_LOGGING_LEVEL', 'INVALIDLOGLEVEL')
+    yield
 
 
 def test_config_prefix():
