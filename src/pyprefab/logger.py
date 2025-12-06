@@ -1,9 +1,19 @@
+import logging
 import sys
 
 import structlog
 
+from pyprefab.config import PyprefabConfig
+
 
 def configure_logging():
+    config = PyprefabConfig()
+
+    # Set logging level from config if available
+    log_level = config.get_package_setting('logging.level')
+    if log_level is not None:
+        logging.root.setLevel(log_level)
+
     shared_processors = [
         structlog.processors.TimeStamper(fmt='iso', utc=True),
         structlog.processors.add_log_level,
@@ -24,5 +34,6 @@ def configure_logging():
 
     structlog.configure(
         processors=processors,
+        wrapper_class=structlog.make_filtering_bound_logger(logging.root.level),
         cache_logger_on_first_use=True,
     )
