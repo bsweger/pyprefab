@@ -10,10 +10,15 @@ from pyprefab.logger import configure_logging
 
 
 @pytest.fixture
-def reset_logging():
-    """Reset logging configuration after each test."""
+def reset_logging(monkeypatch):
+    """Reset logging configuration before and after each test."""
+    # clear existing logging level env var and reset to default of WARNING
+    monkeypatch.delenv('PYPREFAB_LOGGING_LEVEL', raising=False)
+    logging.root.setLevel(logging.WARNING)
+
     yield
-    # reset to default WARNING level and clear struclog config
+
+    # clean up after test
     logging.root.setLevel(logging.WARNING)
     structlog.reset_defaults()
 

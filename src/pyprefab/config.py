@@ -1,3 +1,4 @@
+import logging
 import os
 from pathlib import Path
 from typing import Any
@@ -22,6 +23,7 @@ class PyprefabConfig:
         self._config: dict[str, Any] = {}
 
         self._load_config()
+        self.validate_config()
 
     def _load_config(self) -> None:
         """
@@ -104,7 +106,8 @@ class PyprefabConfig:
 
         log_level = self.get_package_setting('logging.level')
 
-        if log_level not in {'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'}:
+        # check for valid logging level
+        if log_level is not None and not hasattr(logging, log_level):
             raise ValueError(f'Invalid logging level: {log_level}')
 
         return True

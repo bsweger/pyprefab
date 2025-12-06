@@ -9,7 +9,7 @@ from pyprefab.config import PyprefabConfig
 def setenv(monkeypatch):
     """Fixture to set environment variables."""
     monkeypatch.setenv('PYPREFAB_TESTY_LEVELS_GREETING', 'HOWDY')
-    monkeypatch.setenv('PYPREFAB_LOGGING_LEVEL', 'INVALIDLOGLEVEL')
+    monkeypatch.setenv('PYPREFAB_LOGGING_LEVEL', 'DEBUG')
     yield
 
 
@@ -29,11 +29,12 @@ def test_config_env_override(setenv):
     assert config.get_package_setting('testy.levels.greeting') == 'HOWDY'
     assert config.get_package_setting('testy.levels') == {'greeting': 'HOWDY'}
     assert config.get_package_setting('testy') == {'levels': {'greeting': 'HOWDY'}}
-    assert config.get_package_setting('logging.level') == 'INVALIDLOGLEVEL'
+    assert config.get_package_setting('logging.level') == 'DEBUG'
     assert config.get_package_setting('fakekey.mwahaha') is None
 
 
-def test_validate_config(setenv):
-    config = PyprefabConfig()
+def test_validate_config(monkeypatch):
+    """Invalid logging level should raise a config error."""
+    monkeypatch.setenv('PYPREFAB_LOGGING_LEVEL', 'INVALID_LEVEL')
     with pytest.raises(ValueError, match='Invalid logging level'):
-        config.validate_config()
+        PyprefabConfig()
