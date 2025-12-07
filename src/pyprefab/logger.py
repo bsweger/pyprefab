@@ -3,12 +3,8 @@ import sys
 
 import structlog
 
-from pyprefab.config import PyprefabConfig
 
-
-def configure_logging():
-    config = PyprefabConfig()
-
+def configure_logging(config) -> None:
     # Set logging level from config if available
     log_level = config.get_package_setting('logging.level')
     if log_level is not None:

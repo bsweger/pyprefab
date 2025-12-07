@@ -182,6 +182,8 @@ def main(
 
     current_year = datetime.now().year
 
+    logger.debug('creating package', package=name, directory=str(target_dir))
+
     try:
         # Create package directory
         target_dir.mkdir(parents=True, exist_ok=True)
@@ -224,6 +226,8 @@ def main(
         if target_dir.exists():
             shutil.rmtree(target_dir)
         raise typer.Exit(1)
+
+    logger.debug('package created', package=name, directory=str(target_dir))
 
 
 if __name__ == '__main__':

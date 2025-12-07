@@ -7,9 +7,14 @@ project uses [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Added
+
+- Add a config mechanism that works via config.toml or env variables
+
 ### Changed
 
 - Make improvements to logging-related portion of the templates
+- Set logging level via application configuration instead of hard-coding
 
 ### Internal
 
