@@ -34,7 +34,7 @@ class PyprefabConfig:
         self._load_config_toml()
         self._apply_env_overrides()
 
-    def _load_config_toml(self):
+    def _load_config_toml(self) -> None:
         """Load pyprefab .toml config."""
         config_path = Path(__file__).parent / 'config.toml'
 
