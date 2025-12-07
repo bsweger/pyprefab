@@ -6,12 +6,12 @@ exclude: |
 repos:
 - repo: https://github.com/astral-sh/uv-pre-commit
   # uv version.
-  rev: 0.7.3
+  rev: 0.9.16
   hooks:
     - id: uv-lock
 - repo: https://github.com/astral-sh/ruff-pre-commit
   # Ruff version.
-  rev: v0.8.0
+  rev: v0.14.8
   hooks:
     # Run the linter.
     - id: ruff
@@ -19,7 +19,7 @@ repos:
     # Run the formatter.
     - id: ruff-format
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.6.0
+  rev: v6.0.0
   hooks:
   - id: trailing-whitespace
   - id: check-yaml
@@ -30,7 +30,7 @@ repos:
   - id: detect-private-key
   - id: double-quote-string-fixer
 - repo: https://github.com/codespell-project/codespell
-  rev: v2.3.0
+  rev: v2.4.1
   hooks:
   - id: codespell
     args: ['--skip', 'test/__snapshots__/*.*', '--ignore-words-list', 'parsin']

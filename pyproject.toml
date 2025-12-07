@@ -106,4 +106,4 @@ quote-style = 'single'
 # ensure setuptools_scm generates a version number that reflects latest tags
 # https://docs.astral.sh/uv/concepts/cache/#dynamic-metadata
 cache-keys = [{ git = { commit = true, tags = true } }]
-required-version = ">=0.7.1,<0.8.0"
+required-version = ">=0.9.16"
