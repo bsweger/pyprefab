@@ -1,13 +1,8 @@
 import logging
 import os
+import tomllib  # type: ignore
 from pathlib import Path
 from typing import Any
-
-# tomllib is not part of the standard library until Python 3.11
-try:
-    import tomllib  # type: ignore
-except ModuleNotFoundError:
-    import tomli as tomllib  # type: ignore
 
 
 class PyprefabConfig:

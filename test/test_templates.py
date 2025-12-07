@@ -1,12 +1,8 @@
 """Snapshot tests for pyprefab templates."""
 
-import pytest
+import tomllib  # type: ignore
 
-# tomllib is not part of the standard library until Python 3.11
-try:
-    import tomllib  # type: ignore
-except ModuleNotFoundError:
-    import tomli as tomllib  # type: ignore
+import pytest
 
 
 def test_pyproject_docs(cli_output, snapshot):
