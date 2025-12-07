@@ -46,6 +46,7 @@ docs = [
     "sphinx-copybutton>=0.5.2",
     "sphinxcontrib-typer>=0.5.1",
     "sphinxext-opengraph>=0.9.1",
+    "watchfiles>=1.1.0",  # python 3.14 support requires PyO3 0.25.1+
 ]
 
 [project.entry-points.console_scripts]
