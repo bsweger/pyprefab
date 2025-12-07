@@ -310,7 +310,7 @@
       runs-on: ubuntu-latest
       strategy:
         matrix:
-          python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+          python-version: ["3.11", "3.12", "3.13"]
   
   
       steps:
@@ -807,7 +807,7 @@
       ]),
       'name': 'transporter_logs',
       'readme': 'README.md',
-      'requires-python': '>=3.9',
+      'requires-python': '>=3.11',
       'scripts': dict({
         'transporter_logs': 'transporter_logs.app:main',
       }),
@@ -896,7 +896,7 @@
       ]),
       'name': 'transporter_logs',
       'readme': 'README.md',
-      'requires-python': '>=3.9',
+      'requires-python': '>=3.11',
       'scripts': dict({
         'transporter_logs': 'transporter_logs.app:main',
       }),

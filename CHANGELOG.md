@@ -15,6 +15,7 @@ project uses [Semantic Versioning](https://semver.org/).
 
 - Make improvements to logging-related portion of the templates
 - Set logging level via application configuration instead of hard-coding
+- Add Python 3.14, drop 3.9 and 3.10
 
 ### Internal
 
