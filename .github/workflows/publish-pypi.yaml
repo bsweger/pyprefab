@@ -31,7 +31,7 @@ jobs:
         uses: actions/setup-python@v6
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 #v7.1.4
+        uses: astral-sh/setup-uv@ed21f2f24f8dd64503750218de024bcf64c7250a #v7.1.5
 
       - name: Build package for distribution 🛠️
         run: |
@@ -84,7 +84,7 @@ jobs:
         name: package-distribution
         path: dist/
     - name: Sign the dists with Sigstore 📝
-      uses: sigstore/gh-action-sigstore-python@f832326173235dcb00dd5d92cd3f353de3188e6c #v3.1.0
+      uses: sigstore/gh-action-sigstore-python@a5caf349bc536fbef3668a10ed7f5cd309a4b53d #v3.2.0
       with:
         inputs: >-
           ./dist/*.tar.gz
