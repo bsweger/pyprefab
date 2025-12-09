@@ -1,12 +1,12 @@
 [project]
-name = 'pyprefab'
-description = 'Python application template for personal use'
+name = "pyprefab"
+description = "Python application template for personal use"
 authors = [
     {name = "Becky Sweger", email = "bsweger@gmail.com"},
 ]
 license = "MIT"
-readme = 'README.md'
-requires-python = '>=3.11'
+readme = "README.md"
+requires-python = ">=3.11"
 classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python :: 3 :: Only",
@@ -16,25 +16,25 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
 ]
 
-dynamic = ['version']
+dynamic = ["version"]
 
 dependencies = [
-    'structlog',
-    'rich',
-    'typer',
-    'jinja2>=3.1.5',
+    "structlog",
+    "rich",
+    "typer",
+    "jinja2>=3.1.5",
 ]
 
 [dependency-groups]
 dev = [
-    'build',
-    'coverage',
-    'freezegun',
-    'mypy',
-    'nox>=2025.05.01',
-    'pytest',
+    "build",
+    "coverage",
+    "freezegun",
+    "mypy",
+    "nox>=2025.05.01",
+    "pytest",
     "pytest-random-order>=1.1.1",
-    'ruff',
+    "ruff",
     "syrupy>=4.8.1",
 ]
 docs = [
@@ -58,7 +58,7 @@ Changelog = "https://github.com/bsweger/pyprefab/blob/main/CHANGELOG.md"
 
 [build-system]
 # Minimum requirements for the build system to execute.
-requires = ['setuptools>=45', 'wheel', "setuptools_scm>=8"]
+requires = ["setuptools>=45", "wheel", "setuptools_scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
@@ -73,7 +73,7 @@ local_scheme = "no-local-version"
 
 [tool.pyprefab]
 # to write json-formatted logs to disk, uncomment the following line specify the file location
-# log_file = '/path/to/logs/files/pyprefab.log'
+# log_file = "/path/to/logs/files/pyprefab.log"
 
 [tool.pytest.ini_options]
 addopts = "--random-order"
@@ -85,7 +85,7 @@ testpaths = [
 [tool.coverage.run]
 omit = [
     # omit jinja templates from coverage reports
-    '*/templates/*'
+    "*/templates/*"
 ]
 
 [tool.mypy]
@@ -93,13 +93,7 @@ ignore_missing_imports = true
 
 [tool.ruff]
 line-length = 120
-lint.extend-select = ['I', 'Q']
-
-[tool.ruff.lint.flake8-quotes]
-inline-quotes = 'single'
-
-[tool.ruff.format]
-quote-style = 'single'
+lint.extend-select = ["I", "Q"]
 
 [tool.uv]
 # ensure setuptools_scm generates a version number that reflects latest tags

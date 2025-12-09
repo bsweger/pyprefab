@@ -7,22 +7,22 @@ logger = structlog.get_logger()
 
 def main():
     """{{ package_name }} starting point."""
-    logger.info('starting {{ package_name }}...')
+    logger.info("starting {{ package_name }}...")
 
     console = Console()
     console.print(
         Panel(
-            ':tada: Hello from the {{ package_name }} Python package!',
-            border_style='green',
+            ":tada: Hello from the {{ package_name }} Python package!",
+            border_style="green",
             expand=False,
             padding=(1, 4),
-            subtitle='[italic]created by pyprefab[/italic]',
-            subtitle_align='right',
-            title='{{ package_name }}',
-            title_align='left',
+            subtitle="[italic]created by pyprefab[/italic]",
+            subtitle_align="right",
+            title="{{ package_name }}",
+            title_align="left",
         )
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
