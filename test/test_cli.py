@@ -57,7 +57,7 @@ def test_pyprefab_cli(tmp_path, cli_inputs, expected_dirs):
     result = runner.invoke(
         app,
         cli_inputs + ["--dir", package_dir],
-        input='""\nn\n',
+        input="''\nn\n",
     )
     assert result.exit_code == 0
     assert package_dir.exists()
@@ -104,7 +104,7 @@ def test_app_package_dir_callback(monkeypatch, tmp_path):
     package_dir = "~/test_package_dir"
     runner = CliRunner()
     # boolean prompts require explicit 'n' or 'y'
-    result = runner.invoke(app, ["--name", "pytest_package", "--author", "Py Test", "--dir", package_dir], input='""\nn\n')
+    result = runner.invoke(app, ["--name", "pytest_package", "--author", "Py Test", "--dir", package_dir], input="''\nn\n")
     assert result.exit_code == 0
 
 
