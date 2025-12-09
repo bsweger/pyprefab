@@ -14,12 +14,15 @@ project uses [Semantic Versioning](https://semver.org/).
 ### Changed
 
 - Make improvements to logging-related portion of the templates
-- Set logging level via application configuration instead of hard-coding
 - Add Python 3.14, drop 3.9 and 3.10
+- Add cooldown to Dependabot settings template
 
 ### Internal
 
 - Move log configuration to __init__.py
+- Set logging level via application configuration instead of hard-coding
+- Add cooldown to project Dependabot settings
+- Switching default quote style from single to double
 
 ## 0.5.7
 
