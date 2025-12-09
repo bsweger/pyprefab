@@ -1,64 +1,64 @@
 import nox
 
-nox.options.default_venv_backend = 'uv'
+nox.options.default_venv_backend = "uv"
 
-PYPROJECT = nox.project.load_toml('pyproject.toml')
+PYPROJECT = nox.project.load_toml("pyproject.toml")
 PYTHON_VERSIONS = nox.project.python_versions(PYPROJECT)
 # assume that the programming version classifies in pyproject.toml are in ascending order
 PYTHON_LATEST = PYTHON_VERSIONS[-1]
 COVERAGE_THRESHOLD = 90
 
 
-@nox.session(tags=['checks', 'ci'])
+@nox.session(tags=["checks", "ci"])
 def lint(session: nox.Session) -> None:
     """Run the linter."""
-    session.install('ruff')
-    session.run('ruff', 'check', '.')
+    session.install("ruff")
+    session.run("ruff", "check", ".")
 
 
-@nox.session(tags=['checks', 'ci'])
+@nox.session(tags=["checks", "ci"])
 def typecheck(session: nox.Session) -> None:
     """Run static type checking."""
-    session.install('mypy')
-    session.run('mypy', 'src', 'test')
+    session.install("mypy")
+    session.run("mypy", "src", "test")
 
 
-@nox.session(python=PYTHON_VERSIONS, tags=['checks', 'ci'])
+@nox.session(python=PYTHON_VERSIONS, tags=["checks", "ci"])
 def tests(session: nox.Session) -> None:
     """Install dependencies from lockfile and run tests."""
     session.run_install(
-        'uv',
-        'sync',
-        '--active',
-        '--group=dev',
-        '--frozen',
-        '--quiet',
-        f'--python={session.virtualenv.location}',
+        "uv",
+        "sync",
+        "--active",
+        "--group=dev",
+        "--frozen",
+        "--quiet",
+        f"--python={session.virtualenv.location}",
     )
-    session.run('pytest')
+    session.run("pytest")
 
 
-@nox.session(tags=['checks', 'ci'], python=PYTHON_LATEST, requires=[f'tests-{PYTHON_LATEST}'])
+@nox.session(tags=["checks", "ci"], python=PYTHON_LATEST, requires=[f"tests-{PYTHON_LATEST}"])
 def coverage(session) -> None:
     """Check test coverage."""
     session.run_install(
-        'uv',
-        'sync',
-        '--active',
-        '--group=dev',
-        '--frozen',
-        '--quiet',
-        f'--python={session.virtualenv.location}',
+        "uv",
+        "sync",
+        "--active",
+        "--group=dev",
+        "--frozen",
+        "--quiet",
+        f"--python={session.virtualenv.location}",
     )
-    session.run('coverage', 'erase', silent=True)
-    session.run('coverage', 'run', '-m', 'pytest', '--quiet', '--no-header', '--no-summary', silent=True)
-    session.run('coverage', 'html', '--skip-covered', '--skip-empty', silent=True)
+    session.run("coverage", "erase", silent=True)
+    session.run("coverage", "run", "-m", "pytest", "--quiet", "--no-header", "--no-summary", silent=True)
+    session.run("coverage", "html", "--skip-covered", "--skip-empty", silent=True)
     session.run(
-        'coverage',
-        'report',
-        '--format',
-        'markdown',
-        f'--fail-under={COVERAGE_THRESHOLD}',
+        "coverage",
+        "report",
+        "--format",
+        "markdown",
+        f"--fail-under={COVERAGE_THRESHOLD}",
     )
 
 
@@ -66,45 +66,45 @@ def coverage(session) -> None:
 def test_dev_install(session: nox.Session) -> None:
     """Install as a package and run tests."""
     session.run_install(
-        'uv',
-        'sync',
-        '--active',
-        '--group=dev',
+        "uv",
+        "sync",
+        "--active",
+        "--group=dev",
     )
-    session.run('pytest')
+    session.run("pytest")
 
 
 @nox.session(python=PYTHON_VERSIONS)
 def test_pypi_install(session: nox.Session) -> None:
     """Install as a package and run tests."""
-    session.run_install('uv', 'pip', 'install', 'pyprefab')
+    session.run_install("uv", "pip", "install", "pyprefab")
 
 
-@nox.session(python=PYTHON_LATEST, tags=['checks', 'ci'])
+@nox.session(python=PYTHON_LATEST, tags=["checks", "ci"])
 def docs(session: nox.Session) -> None:
     """Build the documentation."""
     session.run_install(
-        'uv',
-        'sync',
-        '--active',
-        '--group=docs',
-        '--frozen',
-        '--quiet',
-        f'--python={session.virtualenv.location}',
+        "uv",
+        "sync",
+        "--active",
+        "--group=docs",
+        "--frozen",
+        "--quiet",
+        f"--python={session.virtualenv.location}",
     )
-    session.run('sphinx-build', '-W', '-b', 'html', 'docs/source', 'docs/_build/html')
+    session.run("sphinx-build", "-W", "-b", "html", "docs/source", "docs/_build/html")
 
 
 @nox.session(default=False)
 def docs_serve(session: nox.Session) -> None:
     """Serve the documentation locally."""
     session.run_install(
-        'uv',
-        'sync',
-        '--active',
-        '--group=docs',
-        '--frozen',
-        '--quiet',
-        f'--python={session.virtualenv.location}',
+        "uv",
+        "sync",
+        "--active",
+        "--group=docs",
+        "--frozen",
+        "--quiet",
+        f"--python={session.virtualenv.location}",
     )
-    session.run('sphinx-autobuild', 'docs/source', 'docs/_build/html', external=True)
+    session.run("sphinx-autobuild", "docs/source", "docs/_build/html", external=True)

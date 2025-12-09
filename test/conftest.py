@@ -10,15 +10,15 @@ def cli_output(tmp_path):
     result = runner.invoke(
         app,
         [
-            '--name',
-            'transporter_logs',
-            '--author',
+            "--name",
+            "transporter_logs",
+            "--author",
             "Miles O'Brien",
-            '--description',
+            "--description",
             'An app for parsin\' "transporter logs"',
-            '--dir',
+            "--dir",
             tmp_path,
-            '--docs',
+            "--docs",
         ],
     )
     return tmp_path, result
@@ -30,14 +30,15 @@ def cli_output_no_docs(tmp_path):
     result = runner.invoke(
         app,
         [
-            '--name',
-            'transporter_logs',
-            '--author',
+            "--name",
+            "transporter_logs",
+            "--author",
             "Miles O'Brien",
-            '--description',
-            'An app for parsin\' "transporter logs"',
-            '--dir',
+            "--description",
+            "An app for parsin' transporter logs",
+            "--dir",
             tmp_path,
         ],
+        input="n\n"
     )
     return tmp_path, result

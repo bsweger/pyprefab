@@ -3,6 +3,7 @@
 import os
 import shutil
 import sys
+import traceback
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
@@ -23,9 +24,9 @@ logger = structlog.get_logger()
 
 cli_theme = Theme(
     {
-        'help': 'bold cyan',
-        'option': 'bold yellow',
-        'argument': 'bold magenta',
+        "help": "bold cyan",
+        "option": "bold yellow",
+        "argument": "bold magenta",
     }
 )
 
@@ -33,8 +34,8 @@ cli_theme = Theme(
 console = Console(theme=cli_theme)
 app = typer.Typer(
     add_completion=False,
-    help='Generate python package scaffolding based on pyprefab.',
-    rich_markup_mode='rich',
+    help="Generate python package scaffolding based on pyprefab.",
+    rich_markup_mode="rich",
 )
 
 
@@ -42,9 +43,9 @@ def validate_package_name(value: str) -> str:
     """Validate that package name follows Python package naming conventions."""
     if not value.isidentifier():
         if value[0].isdigit():
-            msg = 'Python package names cannot start with a number'
+            msg = "Python package names cannot start with a number"
         else:
-            msg = 'Python package names must contain letters, numbers, or underscores'
+            msg = "Python package names must contain letters, numbers, or underscores"
         raise PyprefabBadParameter(msg)
     else:
         return value
@@ -58,13 +59,13 @@ def validate_package_dir(value: Path) -> Path:
     target_dir = Path(os.path.normpath(target_dir_str))
 
     if target_dir.is_file():
-        raise PyprefabBadParameter(f'{str(target_dir)} is a file, not a directory')
+        raise PyprefabBadParameter(f"{str(target_dir)} is a file, not a directory")
 
     # Target directory should be empty (with a few exceptions)
-    allow_existing = ['.git']
+    allow_existing = [".git"]
     exceptions = [allow for allow in allow_existing if (target_dir / allow).is_dir()]
     if target_dir.exists() and sum(1 for item in target_dir.iterdir()) - len(exceptions) > 0:
-        raise PyprefabBadParameter(f'{str(target_dir)} is not an empty directory')
+        raise PyprefabBadParameter(f"{str(target_dir)} is not an empty directory")
 
     return target_dir
 
@@ -72,8 +73,16 @@ def validate_package_dir(value: Path) -> Path:
 def version_callback(value: bool):
     """Return the package version."""
     if value:
-        print(f'pyprefab {__version__}')
+        print(f"pyprefab {__version__}")
         raise typer.Exit()
+
+
+def python_repr(value):
+    """Convert a value to a Python string literal using repr(), preferring double quotes."""
+    result = repr(str(value))
+    if result.startswith("'") and result.endswith("'") and '"' not in result:
+        return '"' + result[1:-1] + '"'
+    return result
 
 
 def render_templates(context: dict, templates_dir: Path, target_dir: Path):
@@ -86,18 +95,19 @@ def render_templates(context: dict, templates_dir: Path, target_dir: Path):
         keep_trailing_newline=True,
         autoescape=select_autoescape(),
     )
+    # Add custom filter for Python string representation
+    env.filters["py_repr"] = python_repr
     # For rendering path names
     path_env = Environment(
         trim_blocks=True,
         lstrip_blocks=True,
         keep_trailing_newline=True,
-        autoescape=select_autoescape(),
     )
 
-    for template_file in templates_dir.rglob('*'):
+    for template_file in templates_dir.rglob("*"):
         if template_file.is_file():
             rel_path = template_file.relative_to(templates_dir)
-            if str(rel_path.parents[0]).startswith('docs') and not context.get('docs'):
+            if str(rel_path.parents[0]).startswith("docs") and not context.get("docs"):
                 continue
             template = env.get_template(str(rel_path))
             output = template.render(**context)
@@ -106,15 +116,16 @@ def render_templates(context: dict, templates_dir: Path, target_dir: Path):
             path_parts = []
             for part in rel_path.parts:
                 # Render each path component through Jinja
+                logger.debug("rendering jinja template", template=part)
                 rendered_part = path_env.from_string(part).render(**context)
-                if rendered_part.endswith('.j2'):
+                if rendered_part.endswith(".j2"):
                     rendered_part = rendered_part[:-3]
                 path_parts.append(rendered_part)
 
             # Create destination path preserving structure
             dest_file = target_dir.joinpath(*path_parts)
             dest_file.parent.mkdir(parents=True, exist_ok=True)
-            with open(dest_file, 'w', encoding='utf-8', newline='\n') as f:
+            with open(dest_file, "w", encoding="utf-8", newline="\n") as f:
                 f.write(output)
 
 
@@ -123,8 +134,8 @@ def main(
     name: Annotated[
         str,
         typer.Option(
-            help='Name of the package',
-            prompt=typer.style('Package name 🐍', fg=typer.colors.MAGENTA, bold=True),
+            help="Name of the package",
+            prompt=typer.style("Package name 🐍", fg=typer.colors.MAGENTA, bold=True),
             callback=validate_package_name,
             show_default=False,
         ),
@@ -132,40 +143,40 @@ def main(
     author: Annotated[
         Optional[str],
         typer.Option(
-            help='Package author',
-            prompt=typer.style('Package author 👤', fg=typer.colors.MAGENTA, bold=True),
+            help="Package author",
+            prompt=typer.style("Package author 👤", fg=typer.colors.MAGENTA, bold=True),
             show_default=False,
         ),
-    ] = 'None',
+    ] = "None",
     description: Annotated[
         Optional[str],
         typer.Option(
-            help='Package description',
-            prompt=typer.style('Package description 📝', fg=typer.colors.MAGENTA, bold=True),
+            help="Package description",
+            prompt=typer.style("Package description 📝", fg=typer.colors.MAGENTA, bold=True),
             show_default=False,
         ),
-    ] = 'None',
+    ] = "None",
     package_dir: Annotated[
         Path,
         typer.Option(
-            '--dir',
-            help='Directory that will contain the package',
-            prompt=typer.style('Package directory 🎬', fg=typer.colors.MAGENTA, bold=True),
-            show_default='current directory',
+            "--dir",
+            help="Directory that will contain the package",
+            prompt=typer.style("Package directory 🎬", fg=typer.colors.MAGENTA, bold=True),
+            show_default="current directory",
             callback=validate_package_dir,
         ),
     ] = Path.cwd(),
     docs: Annotated[
         Optional[bool],
         typer.Option(
-            '--docs',
-            help='Include Sphinx documentation files',
-            prompt=typer.style('Include Sphinx docs? 📄', fg=typer.colors.MAGENTA, bold=True),
+            "--docs",
+            help="Include Sphinx documentation files",
+            prompt=typer.style("Include Sphinx docs? 📄", fg=typer.colors.MAGENTA, bold=True),
         ),
     ] = False,
     version: Annotated[
         Optional[bool],
-        typer.Option('--version', help='Show the version and exit', callback=version_callback, is_eager=True),
+        typer.Option("--version", help="Show the version and exit", callback=version_callback, is_eager=True),
     ] = None,
 ):
     """
@@ -177,39 +188,39 @@ def main(
     Full documentation: https://bsweger.github.io/pyprefab/
 
     """
-    templates_dir = Path(__file__).parent / 'templates'
+    templates_dir = Path(__file__).parent / "templates"
     target_dir = package_dir
 
     current_year = datetime.now().year
 
-    logger.debug('creating package', package=name, directory=str(target_dir))
+    logger.debug("creating package", package=name, directory=str(target_dir))
 
     try:
         # Create package directory
         target_dir.mkdir(parents=True, exist_ok=True)
         # Template context
         context = {
-            'author': author,
-            'current_year': current_year,
-            'description': description,
-            'docs': docs,
-            'package_name': name,
+            "author": author,
+            "current_year": current_year,
+            "description": description,
+            "docs": docs,
+            "package_name": name,
         }
 
         # Write Jinja templates to package directory
         render_templates(context, templates_dir, target_dir)
         panel_msg = (
-            f'✨ Created new package [bold green]{name}[/] in {target_dir}\n'
-            f'Author: [blue]{author}[/]\n'
-            f'Description: {description}'
+            f"✨ Created new package [bold green]{name}[/] in {target_dir}\n"
+            f"Author: [blue]{author}[/]\n"
+            f"Description: {description}"
         )
         if docs:
-            panel_msg += f'\nDocumentation: {target_dir}/docs'
+            panel_msg += f"\nDocumentation: {target_dir}/docs"
         print(
             Panel.fit(
                 panel_msg,
-                title='Package Created Successfully',
-                border_style='green',
+                title="Package Created Successfully",
+                border_style="green",
             )
         )
 
@@ -217,18 +228,24 @@ def main(
         err_console = Console(stderr=True)
         err_console.print(
             Panel.fit(
-                f'⛔️ Error creating package: {str(e)}',
-                title='pyprefab error',
-                border_style='red',
+                f"⛔️ Error creating package: {str(e)}",
+                title="pyprefab error",
+                border_style="red",
             )
         )
-        typer.secho(f'Error creating package: {str(e)}', fg=typer.colors.RED)
+        typer.secho(f"Error creating package: {str(e)}", fg=typer.colors.RED)
         if target_dir.exists():
             shutil.rmtree(target_dir)
+        logger.debug(
+            "package creation failed",
+            package=name,
+            directory=str(target_dir),
+            error=str(e),
+            traceback=traceback.format_exc())
         raise typer.Exit(1)
 
-    logger.debug('package created', package=name, directory=str(target_dir))
+    logger.debug("package created", package=name, directory=str(target_dir))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(app())  # pragma: no cover

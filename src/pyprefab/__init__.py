@@ -10,13 +10,13 @@ from pyprefab.logger import configure_logging
 try:
     CONFIG = PyprefabConfig()
 except ValueError as e:
-    sys.exit(f'Invalid pyprefab configuration: {e}')
+    sys.exit(f"Invalid pyprefab configuration: {e}")
 
 # configure structlog
 configure_logging(CONFIG)
 
 try:
-    __version__ = version('pyprefab')
+    __version__ = version("pyprefab")
 except PackageNotFoundError:  # pragma: no cover
     # package is not installed
     pass

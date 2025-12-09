@@ -13,7 +13,7 @@ class PyprefabConfig:
     any environment variable overrides.
     """
 
-    def __init__(self, env_prefix: str = 'PYPREFAB'):
+    def __init__(self, env_prefix: str = "PYPREFAB"):
         self.env_prefix = env_prefix.upper()
         self._config: dict[str, Any] = {}
 
@@ -31,10 +31,10 @@ class PyprefabConfig:
 
     def _load_config_toml(self) -> None:
         """Load pyprefab .toml config."""
-        config_path = Path(__file__).parent / 'config.toml'
+        config_path = Path(__file__).parent / "config.toml"
 
         if config_path.exists():
-            with open(config_path, 'rb') as f:
+            with open(config_path, "rb") as f:
                 self._config = tomllib.load(f)
         else:
             self._config = {}
@@ -46,14 +46,14 @@ class PyprefabConfig:
         Environment variable format: {PREFIX}_{SECTION}_{KEY}
         Example: PYPREFAB_LOGGING_LEVEL overrides config['logging']['level']
         """
-        prefix = f'{self.env_prefix}_'
+        prefix = f"{self.env_prefix}_"
         env_overrides = {key[len(prefix) :]: value for key, value in os.environ.items() if key.startswith(prefix)}
 
         if not env_overrides:
             return
 
         for env_key, env_value in env_overrides.items():
-            config_path = [part.lower() for part in env_key.split('_')]
+            config_path = [part.lower() for part in env_key.split("_")]
 
             # set config value
             self._set_nested_config_value(config_path, env_value)
@@ -85,7 +85,7 @@ class PyprefabConfig:
 
     def get_package_setting(self, key: str, default=None):
         """Get pyprefab package settings."""
-        keys = key.split('.')
+        keys = key.split(".")
         value = self._config
         for k in keys:
             if isinstance(value, dict) and k in value:
@@ -97,12 +97,12 @@ class PyprefabConfig:
     def validate_config(self):
         """Validate the loaded configuration."""
         if not isinstance(self._config, dict):
-            raise ValueError('Configuration must be a dictionary.')
+            raise ValueError("Configuration must be a dictionary.")
 
-        log_level = self.get_package_setting('logging.level')
+        log_level = self.get_package_setting("logging.level")
 
         # check for valid logging level
         if log_level is not None and not hasattr(logging, log_level):
-            raise ValueError(f'Invalid logging level: {log_level}')
+            raise ValueError(f"Invalid logging level: {log_level}")
 
         return True
