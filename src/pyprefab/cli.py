@@ -241,7 +241,6 @@ def main(
             package=name,
             directory=str(target_dir),
             error=str(e),
-            lineno=e.__traceback__.tb_lineno,
             traceback=traceback.format_exc())
         raise typer.Exit(1)
 
