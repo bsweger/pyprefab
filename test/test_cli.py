@@ -104,7 +104,9 @@ def test_app_package_dir_callback(monkeypatch, tmp_path):
     package_dir = "~/test_package_dir"
     runner = CliRunner()
     # boolean prompts require explicit 'n' or 'y'
-    result = runner.invoke(app, ["--name", "pytest_package", "--author", "Py Test", "--dir", package_dir], input="''\nn\n")
+    result = runner.invoke(
+        app, ["--name", "pytest_package", "--author", "Py Test", "--dir", package_dir], input="''\nn\n"
+    )
     assert result.exit_code == 0
 
 

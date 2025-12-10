@@ -241,7 +241,8 @@ def main(
             package=name,
             directory=str(target_dir),
             error=str(e),
-            traceback=traceback.format_exc())
+            traceback=traceback.format_exc(),
+        )
         raise typer.Exit(1)
 
     logger.debug("package created", package=name, directory=str(target_dir))

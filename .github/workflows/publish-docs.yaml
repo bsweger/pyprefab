@@ -62,4 +62,3 @@ jobs:
         with:
           artifact_name: static-docs
           token: ${{ github.token }}
-
