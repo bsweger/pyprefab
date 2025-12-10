@@ -24,6 +24,7 @@ project uses [Semantic Versioning](https://semver.org/).
 - Set logging level via application configuration instead of hard-coding
 - Add cooldown to project Dependabot settings
 - Switching default quote style from single to double
+- Pin GitHub actions uv installs to the same version
 
 ## 0.5.7
 
