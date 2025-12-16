@@ -70,7 +70,7 @@ master_doc = "index"
 # project information
 now = datetime.now()
 project = "pyprefab"
-copyright = f'{now.year}, Becky Sweger | Last update {now.strftime("%B %d, %Y")}'
+copyright = f"{now.year}, Becky Sweger | Last update {now.strftime('%B %d, %Y')}"
 author = "Becky Sweger"
 
 version = metadata.version("pyprefab")

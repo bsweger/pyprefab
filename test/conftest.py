@@ -39,6 +39,6 @@ def cli_output_no_docs(tmp_path):
             "--dir",
             tmp_path,
         ],
-        input="n\n"
+        input="n\n",
     )
     return tmp_path, result

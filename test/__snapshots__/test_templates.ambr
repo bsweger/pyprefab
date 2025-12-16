@@ -249,6 +249,7 @@
   
   .. include:: readme.md
      :parser: myst_parser.sphinx_
+  
   '''
 # ---
 # name: test_docs_dir[readme.md]
@@ -382,7 +383,6 @@
               name: html-cov-report
               path: htmlcov
           if: ${{ failure() }}
-  
   '''
 # ---
 # name: test_gh_workflows[publish-pypi.yaml]
@@ -746,6 +746,7 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
+  
   '''
 # ---
 # name: test_meta_files[README.md]

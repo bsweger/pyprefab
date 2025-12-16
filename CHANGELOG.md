@@ -10,6 +10,7 @@ project uses [Semantic Versioning](https://semver.org/).
 ### Added
 
 - Add a config mechanism that works via config.toml or env variables
+- Add new hooks to the .pre-commit-config.yaml template
 
 ### Changed
 
@@ -23,6 +24,7 @@ project uses [Semantic Versioning](https://semver.org/).
 - Set logging level via application configuration instead of hard-coding
 - Add cooldown to project Dependabot settings
 - Switching default quote style from single to double
+- Pin GitHub actions uv installs to the same version
 
 ## 0.5.7
 

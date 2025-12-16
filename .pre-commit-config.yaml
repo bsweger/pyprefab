@@ -21,16 +21,22 @@ repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v6.0.0
   hooks:
-  - id: trailing-whitespace
+  - id: check-merge-conflict
+  - id: check-toml
   - id: check-yaml
     args: [--allow-multiple-documents]
   - id: debug-statements
   - id: detect-aws-credentials
     args: [--allow-missing-credentials]
   - id: detect-private-key
-  - id: double-quote-string-fixer
+  - id: end-of-file-fixer
+  - id: trailing-whitespace
 - repo: https://github.com/codespell-project/codespell
   rev: v2.4.1
   hooks:
   - id: codespell
     args: ['--skip', 'test/__snapshots__/*.*', '--ignore-words-list', 'parsin']
+- repo: https://github.com/rhysd/actionlint
+  rev: v1.7.9
+  hooks:
+    - id: actionlint
