@@ -15,7 +15,7 @@ def cli_output(tmp_path):
             "--author",
             "Miles O'Brien",
             "--description",
-            'An app for parsin\' "transporter logs"',
+            "An app for parsin' transporter logs",
             "--dir",
             tmp_path,
             "--docs",

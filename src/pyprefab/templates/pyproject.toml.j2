@@ -1,60 +1,62 @@
 [project]
 name = "{{ package_name }}"
 dynamic = ['version']
+{% autoescape false %}
 description = "{{ description | replace('"', '\\"') }}"
-authors = [{name = "{{ author| replace('"', '\\"') }}"}]
-maintainers = [{name = "{{ author| replace('"', '\\"') }}"}]
+authors = [{name = "{{ author | replace('"', '\\"') }}"}]
+maintainers = [{name = "{{ author | replace('"', '\\"') }}"}]
+{% endautoescape %}
 license = "MIT"
 
-requires-python = '>=3.11'
-readme = 'README.md'
+requires-python = ">=3.11"
+readme = "README.md"
 
 dependencies = [
-    'rich',
-    'structlog',
+    "rich",
+    "structlog",
 ]
 
 [dependency-groups]
 dev = [
-    'coverage',
-    'pre-commit',
-    'pytest',
-    'pytest-random-order>=1.1.1',
-    'ruff',
+    "coverage",
+    "pre-commit",
+    "pytest",
+    "pytest-random-order>=1.1.1",
+    "ruff",
 ]
 {% if docs %}
 docs = [
-    'myst-parser>=3.0.1',
-    'sphinx>=7.4.7',
-    'sphinx-autobuild>=2024.10.3',
-    'sphinx-copybutton>=0.5.2',
+    "myst-parser>=3.0.1",
+    "sphinx>=7.4.7",
+    "sphinx-autobuild>=2024.10.3",
+    "sphinx-copybutton>=0.5.2",
     "sphinxext-opengraph>=0.9.1",
 ]
 {% endif %}
 
 [project.scripts]
-{{ package_name }} = '{{ package_name }}.app:main'
+{{ package_name }} = "{{ package_name }}.app:main"
 
 [project.urls]
 
 [build-system]
-requires = ['setuptools>=45', 'wheel', 'setuptools_scm>=8']
-build-backend = 'setuptools.build_meta'
+requires = ["setuptools>=45", "wheel", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 namespaces = true
-where = ['src']
+where = ["src"]
 
 [tool.setuptools_scm]
-fallback_version = '0.0.0.dev0'
-local_scheme = 'no-local-version'
+fallback_version = "0.0.0.dev0"
+local_scheme = "no-local-version"
 
 [tool.pytest.ini_options]
-addopts = '--random-order'
+addopts = "--random-order"
 testpaths = [
-    'test',
+    "test",
 ]
 
 [tool.ruff]
 line-length = 120
-lint.extend-select = ['I', 'Q']
+lint.extend-select = ["I", "Q"]

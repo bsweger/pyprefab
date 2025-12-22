@@ -51,6 +51,15 @@ def validate_package_name(value: str) -> str:
         return value
 
 
+def validate_author_desc(value: str) -> str:
+    """Validate package author and description."""
+    if '"' in value:
+        msg = 'Author and description cannot contain double quotes (")'
+        raise PyprefabBadParameter(msg)
+    else:
+        return value
+
+
 def validate_package_dir(value: Path) -> Path:
     """Validate the target directory of the new package."""
     # use os.path instead of pathlib for the next two checks because Windows
@@ -77,14 +86,6 @@ def version_callback(value: bool):
         raise typer.Exit()
 
 
-def python_repr(value):
-    """Convert a value to a Python string literal using repr(), preferring double quotes."""
-    result = repr(str(value))
-    if result.startswith("'") and result.endswith("'") and '"' not in result:
-        return '"' + result[1:-1] + '"'
-    return result
-
-
 def render_templates(context: dict, templates_dir: Path, target_dir: Path):
     """Render Jinja templates to target directory."""
     # Process templates
@@ -93,15 +94,18 @@ def render_templates(context: dict, templates_dir: Path, target_dir: Path):
         trim_blocks=True,
         lstrip_blocks=True,
         keep_trailing_newline=True,
-        autoescape=select_autoescape(),
+        autoescape=select_autoescape(
+            default=True,
+        ),
     )
-    # Add custom filter for Python string representation
-    env.filters["py_repr"] = python_repr
     # For rendering path names
     path_env = Environment(
         trim_blocks=True,
         lstrip_blocks=True,
         keep_trailing_newline=True,
+        autoescape=select_autoescape(
+            default=True,
+        )
     )
 
     for template_file in templates_dir.rglob("*"):
@@ -145,6 +149,7 @@ def main(
         typer.Option(
             help="Package author",
             prompt=typer.style("Package author 👤", fg=typer.colors.MAGENTA, bold=True),
+            callback=validate_author_desc,
             show_default=False,
         ),
     ] = "None",
@@ -153,6 +158,7 @@ def main(
         typer.Option(
             help="Package description",
             prompt=typer.style("Package description 📝", fg=typer.colors.MAGENTA, bold=True),
+            callback=validate_author_desc,
             show_default=False,
         ),
     ] = "None",

@@ -27,7 +27,6 @@ def test_lint(cli_output):
 def test_format(cli_output):
     """Files created by CLI should meet formatting standards."""
     package_path, cli_result = cli_output
-
     result = subprocess.run(["ruff", "format", "--check", package_path], capture_output=True, text=True)
     assert result.returncode == 0
 
