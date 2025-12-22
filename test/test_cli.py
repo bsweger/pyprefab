@@ -11,6 +11,7 @@ from typer.testing import CliRunner
 import pyprefab
 from pyprefab.cli import (
     app,  # type: ignore
+    validate_author_desc,
     validate_package_name,
 )
 from pyprefab.exceptions import PyprefabBadParameter
@@ -41,6 +42,19 @@ def test_invalid_package_name(package_name):
     """Test package name validation."""
     with pytest.raises(PyprefabBadParameter):
         validate_package_name(package_name)
+
+
+@pytest.mark.parametrize(
+    "author_name",
+    [
+        ('"double quote" not allowed"'),
+        ('"'),
+    ],
+)
+def test_invalid_author(author_name):
+    """Test author name and package description name validation."""
+    with pytest.raises(PyprefabBadParameter):
+        validate_author_desc(author_name)
 
 
 @pytest.mark.parametrize(

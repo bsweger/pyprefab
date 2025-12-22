@@ -51,6 +51,15 @@ def validate_package_name(value: str) -> str:
         return value
 
 
+def validate_author_desc(value: str) -> str:
+    """Validate package author and description."""
+    if '"' in value:
+        msg = 'Author and description cannot contain double quotes (")'
+        raise PyprefabBadParameter(msg)
+    else:
+        return value
+
+
 def validate_package_dir(value: Path) -> Path:
     """Validate the target directory of the new package."""
     # use os.path instead of pathlib for the next two checks because Windows
@@ -140,6 +149,7 @@ def main(
         typer.Option(
             help="Package author",
             prompt=typer.style("Package author 👤", fg=typer.colors.MAGENTA, bold=True),
+            callback=validate_author_desc,
             show_default=False,
         ),
     ] = "None",
@@ -148,6 +158,7 @@ def main(
         typer.Option(
             help="Package description",
             prompt=typer.style("Package description 📝", fg=typer.colors.MAGENTA, bold=True),
+            callback=validate_author_desc,
             show_default=False,
         ),
     ] = "None",
