@@ -1,9 +1,11 @@
 [project]
 name = "{{ package_name }}"
 dynamic = ['version']
+{% autoescape false %}
 description = "{{ description | replace('"', '\\"') }}"
-authors = [{name = "{{ author| replace('"', '\\"') }}"}]
-maintainers = [{name = "{{ author| replace('"', '\\"') }}"}]
+authors = [{name = "{{ author | replace('"', '\\"') }}"}]
+maintainers = [{name = "{{ author | replace('"', '\\"') }}"}]
+{% endautoescape %}
 license = "MIT"
 
 requires-python = '>=3.11'

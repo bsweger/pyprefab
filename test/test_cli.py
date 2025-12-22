@@ -191,3 +191,53 @@ def test_existing_data_exception_and_no_exception(tmp_path):
         input="y\n",
     )
     assert result.exit_code != 0
+
+
+@pytest.mark.parametrize(
+    "cli_inputs, expected_author",
+    [
+        (["--name", "pytest_package", "--author", "Authorin'' with many 'names 🧐", "--description", "testy"], "Authorin'' with many 'names 🧐"),
+        (["--name", "pytest_package", "--author", "Author, Name", "--description", "testy"], "Author, Name"),
+        (["--name", "pytest_package", "--author", "'", "--description", "testy"], "'"),
+        (["--name", "pytest_package", "--author", "''", "--description", "testy"], "''"),
+    ],
+)
+def test_pyprefab_author_names(tmp_path, cli_inputs, expected_author):
+    """Author name should not be auto-escaped in jinja templates."""
+    package_name = "pytest_package"
+    runner = CliRunner()
+    package_path = tmp_path / package_name
+    result = runner.invoke(
+        app,
+        cli_inputs + ["--dir", package_path],
+        input="y\n",
+    )
+    assert result.exit_code == 0
+    with open(package_path / "pyproject.toml", "r", encoding="utf-8") as f:
+        file = f.read()
+        assert f'authors = [{{name = "{expected_author}"}}]' in file
+
+
+@pytest.mark.parametrize(
+    "cli_inputs, expected_description",
+    [
+        (["--name", "pytest_package", "--author", "Worf", "--description", "app for trackin' things"], "app for trackin' things"),
+        (["--name", "pytest_package", "--author", "Worf", "--description", "''''"], "''''"),
+        (["--name", "pytest_package", "--author", "Worf", "--description", "look ma, usin' an em dash: ⎯"], "look ma, usin' an em dash: ⎯"),
+    ],
+)
+
+def test_pyprefab_description(tmp_path, cli_inputs, expected_description):
+    """Author name should not be auto-escaped in jinja templates."""
+    package_name = "pytest_package"
+    runner = CliRunner()
+    package_path = tmp_path / package_name
+    result = runner.invoke(
+        app,
+        cli_inputs + ["--dir", package_path],
+        input="y\n",
+    )
+    assert result.exit_code == 0
+    with open(package_path / "pyproject.toml", "r", encoding="utf-8") as f:
+        file = f.read()
+        assert f'description = "{expected_description}"' in file
