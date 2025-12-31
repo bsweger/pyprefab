@@ -5,6 +5,13 @@ All notable changes to `pyprefab` are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com), and the
 project uses [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+
+### Internal
+
+- Clean up dependabot config for uv, now that it might (🤞🏻) recognize the
+  lockfile
+
 ## 0.5.8
 
 ### Added
