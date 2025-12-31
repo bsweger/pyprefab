@@ -23,11 +23,6 @@ updates:
       interval: "weekly"
     cooldown:
       default-days: 5
-    ignore:
-      - dependency-name: "jinja2"
-    allow:
-      - dependency-type: "all"
-    versioning-strategy: increase
     groups:
       py-updates:
         applies-to: version-updates
