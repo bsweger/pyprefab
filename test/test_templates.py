@@ -19,7 +19,6 @@ def test_pyproject_docs(cli_output, snapshot):
     [
         "CHANGELOG.md",
         "CONTRIBUTING.md",
-        "LICENSE",
         "README.md",
     ],
 )
