@@ -12,6 +12,8 @@ updates:
     groups:
       gha-updates:
         applies-to: version-updates
+        patterns:
+          - "*"
         update-types:
           - patch
           - minor
@@ -26,6 +28,8 @@ updates:
     groups:
       py-updates:
         applies-to: version-updates
+        patterns:
+          - "*"
         update-types:
           - patch
           - minor
