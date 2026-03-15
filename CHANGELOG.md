@@ -7,6 +7,10 @@ project uses [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+- Use `uv run` for sample `nox` commands in CONTRIBUTING.md
+
 ### Fixed
 
 - Fix typing_extensions import error
