@@ -95,11 +95,11 @@ Once your development environment is set up, you can start making your changes.
 Note that you can test your work in progress by running individual nox sessions
 as you go:
 
-- `nox -s lint` - Run the linter (ruff)
-- `nox -s typecheck` - Run static type checking (mypy)
-- `nox -s tests` - Run the test suite (will run on all supported Python versions)
-- `nox -s docs` - Build the documentation
-- `nox -s docs_serve` - Serve the documentation locally with auto-reload
+- `uv run nox -s lint` - Run the linter (ruff)
+- `uv run nox -s typecheck` - Run static type checking (mypy)
+- `uv run nox -s tests` - Run the test suite (will run on all supported Python versions)
+- `uv run nox -s docs` - Build the documentation
+- `uv run nox -s docs_serve` - Serve the documentation locally with auto-reload
 
 To run a specific session with a specific Python version:
 

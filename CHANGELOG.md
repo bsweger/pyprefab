@@ -7,10 +7,17 @@ project uses [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+- Use `uv run` for sample `nox` commands in CONTRIBUTING.md
+
+### Fixed
+
+- Fix typing_extensions import error
+
 ### Internal
 
-- Clean up dependabot config for uv, now that it might (🤞🏻) recognize the
-  lockfile
+- Clean up dependabot config for uv now that it recognizes the lockfile
 
 ## 0.5.8
 

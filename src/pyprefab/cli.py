@@ -6,7 +6,7 @@ import sys
 import traceback
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Annotated, Optional
 
 import structlog
 import typer
@@ -15,7 +15,6 @@ from rich import print
 from rich.console import Console
 from rich.panel import Panel
 from rich.theme import Theme
-from typing_extensions import Annotated
 
 from pyprefab import __version__
 from pyprefab.exceptions import PyprefabBadParameter
@@ -105,7 +104,7 @@ def render_templates(context: dict, templates_dir: Path, target_dir: Path):
         keep_trailing_newline=True,
         autoescape=select_autoescape(
             default=True,
-        )
+        ),
     )
 
     for template_file in templates_dir.rglob("*"):
