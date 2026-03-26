@@ -5,6 +5,15 @@ All notable changes to `pyprefab` are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com), and the
 project uses [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+
+### Internal
+
+- Add a cooldown period to uv settings
+- Increase Dependabot cooldown period from 5 days to 7 days
+- Dependency updates
+
+
 ## 0.6.0
 
 ### Changed
