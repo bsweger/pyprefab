@@ -823,6 +823,9 @@
         'fallback_version': '0.0.0.dev0',
         'local_scheme': 'no-local-version',
       }),
+      'uv': dict({
+        'exclude-newer': '7 days',
+      }),
     }),
   })
 # ---
@@ -905,6 +908,9 @@
       'setuptools_scm': dict({
         'fallback_version': '0.0.0.dev0',
         'local_scheme': 'no-local-version',
+      }),
+      'uv': dict({
+        'exclude-newer': '7 days',
       }),
     }),
   })
