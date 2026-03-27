@@ -24,7 +24,7 @@ def reset_logging(monkeypatch):
 
 
 def test_logging_level_from_config(reset_logging, monkeypatch):
-    """Test that logging level is set from config when specified."""
+    """Logging level env variable should override other config sources."""
     monkeypatch.setenv("PYPREFAB_LOGGING_LEVEL", "DEBUG")
     config = PyprefabConfig()
     configure_logging(config)
@@ -32,10 +32,10 @@ def test_logging_level_from_config(reset_logging, monkeypatch):
     assert logging.root.level == logging.DEBUG
 
 
-def test_logging_level_default_when_not_specified(reset_logging, monkeypatch):
-    """Test that logging level uses Python's default WARNING when not specified."""
+def test_logging_level_default_when_not_specified(reset_logging, monkeypatch, tmp_path):
+    """Logging level should use field default (INFO) when no config sources are present."""
+    monkeypatch.chdir(tmp_path)
     monkeypatch.delenv("PYPREFAB_LOGGING_LEVEL", raising=False)
     config = PyprefabConfig()
-    config._config = {}
     configure_logging(config)
-    assert logging.root.level == logging.WARNING
+    assert logging.root.level == logging.INFO

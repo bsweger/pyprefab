@@ -5,32 +5,27 @@ import pytest
 from pyprefab.config import PyprefabConfig
 
 
-@pytest.fixture
-def setenv(monkeypatch):
-    """Fixture to set environment variables."""
-    monkeypatch.setenv("PYPREFAB_TESTY_LEVELS_GREETING", "HOWDY")
+def test_config_defaults(monkeypatch, tmp_path):
+    """Field defaults apply when no pyproject.toml settings are present."""
+    monkeypatch.chdir(tmp_path)
+    config = PyprefabConfig()
+    assert config.logging.level == "INFO"
+
+
+def test_config_env_override(monkeypatch):
+    """Config recognizes environment variable-based settings."""
     monkeypatch.setenv("PYPREFAB_LOGGING_LEVEL", "DEBUG")
-    yield
-
-
-def test_config_prefix():
     config = PyprefabConfig()
-    assert isinstance(config._config, dict)
-    assert config.env_prefix == "PYPREFAB"
+    assert config.logging.level == "DEBUG"
 
 
-def test_config_custom_prefix():
-    config = PyprefabConfig(env_prefix="HOWDY")
-    assert config.env_prefix == "HOWDY"
-
-
-def test_config_env_override(setenv):
+def test_config_pyproject_toml(monkeypatch, tmp_path):
+    """Config recognizes settings in pyproject.toml."""
+    pyproject = tmp_path / "pyproject.toml"
+    pyproject.write_text("[tool.pyprefab.logging]\nlevel = 'WARNING'\n")
+    monkeypatch.chdir(tmp_path)
     config = PyprefabConfig()
-    assert config.get_package_setting("testy.levels.greeting") == "HOWDY"
-    assert config.get_package_setting("testy.levels") == {"greeting": "HOWDY"}
-    assert config.get_package_setting("testy") == {"levels": {"greeting": "HOWDY"}}
-    assert config.get_package_setting("logging.level") == "DEBUG"
-    assert config.get_package_setting("fakekey.mwahaha") is None
+    assert config.logging.level == "WARNING"
 
 
 def test_validate_config(monkeypatch):

@@ -6,9 +6,7 @@ import structlog
 
 def configure_logging(config) -> None:
     # Set logging level from config if available
-    log_level = config.get_package_setting("logging.level")
-    if log_level is not None:
-        logging.root.setLevel(log_level)
+    logging.root.setLevel(config.logging.level)
 
     shared_processors = [
         structlog.processors.TimeStamper(fmt="iso", utc=True),
