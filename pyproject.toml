@@ -23,6 +23,7 @@ dependencies = [
     "rich",
     "typer",
     "jinja2>=3.1.5",
+    "pydantic-settings",
 ]
 
 [dependency-groups]
@@ -74,6 +75,9 @@ local_scheme = "no-local-version"
 [tool.pyprefab]
 # to write json-formatted logs to disk, uncomment the following line specify the file location
 # log_file = "/path/to/logs/files/pyprefab.log"
+
+[tool.pyprefab.logging]
+level = "WARNING"
 
 [tool.pytest.ini_options]
 addopts = "--random-order"
