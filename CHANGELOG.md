@@ -7,12 +7,15 @@ project uses [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+- Replace custom config management with `pydantic-settings`
+
 ### Internal
 
 - Add a cooldown period to uv settings
 - Increase Dependabot cooldown period from 5 days to 7 days
 - Dependency updates
-
 
 ## 0.6.0
 
