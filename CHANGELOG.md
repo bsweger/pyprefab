@@ -16,6 +16,7 @@ project uses [Semantic Versioning](https://semver.org/).
 - Add a cooldown period to uv settings
 - Increase Dependabot cooldown period from 5 days to 7 days
 - Dependency updates
+- Exclude markdown files from GitHub actions CI job
 
 ## 0.6.0
 
