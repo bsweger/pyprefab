@@ -275,6 +275,11 @@
     push:
       branches:
         - main
+      paths-ignore:
+        - CHANGELOG.md
+        - CONTRIBUTING
+        - LICENSE
+        - README.md
     pull_request:
     workflow_dispatch:
   
