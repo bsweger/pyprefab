@@ -5,11 +5,14 @@ All notable changes to `pyprefab` are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com), and the
 project uses [Semantic Versioning](https://semver.org/).
 
-## Unreleased
+## 0.6.1
 
 ### Changed
 
 - Replace custom config code with `pydantic-settings`
+- Add Ruff security rules to the pyproject.toml template
+- Add license-file and Ruff security rules to the pyproject.toml template
+- Use newer versions of github actions in the template files
 
 ### Internal
 
