@@ -782,6 +782,9 @@
         'version',
       ]),
       'license': 'MIT',
+      'license-files': list([
+        'LICENSE',
+      ]),
       'maintainers': list([
         dict({
           'name': "Miles O'Brien",
@@ -876,6 +879,9 @@
         'version',
       ]),
       'license': 'MIT',
+      'license-files': list([
+        'LICENSE',
+      ]),
       'maintainers': list([
         dict({
           'name': "Miles O'Brien",

@@ -5,6 +5,7 @@ authors = [
     {name = "Becky Sweger", email = "bsweger@gmail.com"},
 ]
 license = "MIT"
+license-files = ["LICENSE"]
 readme = "README.md"
 requires-python = ">=3.11"
 classifiers = [
