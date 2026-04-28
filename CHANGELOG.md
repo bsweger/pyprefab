@@ -10,6 +10,7 @@ project uses [Semantic Versioning](https://semver.org/).
 ### Changed
 
 - Replace custom config code with `pydantic-settings`
+- Add Ruff security rules to the pyproject.toml template
 
 ### Internal
 

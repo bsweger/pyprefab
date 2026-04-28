@@ -97,7 +97,21 @@ ignore_missing_imports = true
 
 [tool.ruff]
 line-length = 120
-lint.extend-select = ["I", "Q"]
+
+[tool.ruff.lint]
+extend-select = [
+    "I",  # isort
+    "Q",  # flake8-quotes
+    "S",  # flake8-bandit security rules
+]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"**/test/**/*.py" = [
+    # at least this three should be fine in tests:
+    "S101",  # allow assert in tests
+    "S603",  # subprocess commands in test suite not subject to untrusted input
+    "S607",  # allow subprocess python-based commands in tests
+]
 
 [tool.uv]
 # ensure setuptools_scm generates a version number that reflects latest tags

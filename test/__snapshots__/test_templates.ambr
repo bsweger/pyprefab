@@ -808,9 +808,17 @@
       'ruff': dict({
         'line-length': 120,
         'lint': dict({
+          'extend-per-file-ignores': dict({
+            'test/**/*.py': list([
+              'S101',
+              'S603',
+              'S607',
+            ]),
+          }),
           'extend-select': list([
             'I',
             'Q',
+            'S',
           ]),
         }),
       }),
@@ -894,9 +902,17 @@
       'ruff': dict({
         'line-length': 120,
         'lint': dict({
+          'extend-per-file-ignores': dict({
+            'test/**/*.py': list([
+              'S101',
+              'S603',
+              'S607',
+            ]),
+          }),
           'extend-select': list([
             'I',
             'Q',
+            'S',
           ]),
         }),
       }),
