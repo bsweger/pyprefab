@@ -12,6 +12,7 @@ project uses [Semantic Versioning](https://semver.org/).
 - Replace custom config code with `pydantic-settings`
 - Add Ruff security rules to the pyproject.toml template
 - Add license-file and Ruff security rules to the pyproject.toml template
+- Use newer versions of github actions in the template files
 
 ### Internal
 

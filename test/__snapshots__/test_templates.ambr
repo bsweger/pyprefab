@@ -299,12 +299,12 @@
   
       steps:
         - name: Checkout 🛎️
-          uses: actions/checkout@v4
+          uses: actions/checkout@v6
           with:
             persist-credentials: false
   
         - name: Install uv 🌟
-          uses: astral-sh/setup-uv@22695119d769bdb6f7032ad67b9bca0ef8c4a174 #v5.4.0
+          uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
           with:
               version: ">=0.0.1"
   
@@ -323,12 +323,12 @@
   
       steps:
         - name: Checkout 🛎️
-          uses: actions/checkout@v4
+          uses: actions/checkout@v6
           with:
             persist-credentials: false
   
         - name: Install uv 🌟
-          uses: astral-sh/setup-uv@22695119d769bdb6f7032ad67b9bca0ef8c4a174 #v5.4.0
+          uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
           with:
               python-version: ${{ matrix.python-version }}
               version: ">=0.0.1"
@@ -340,7 +340,7 @@
               -m pytest
   
         - name: Upload coverage data 📤
-          uses: actions/upload-artifact@v4
+          uses: actions/upload-artifact@v7
           with:
             name: coverage-data-${{ matrix.python-version }}
             path: .coverage.*
@@ -356,17 +356,17 @@
   
       steps:
         - name: Checkout 🛎️
-          uses: actions/checkout@v4
+          uses: actions/checkout@v6
           with:
             persist-credentials: false
   
         - name: Install uv 🌟
-          uses: astral-sh/setup-uv@22695119d769bdb6f7032ad67b9bca0ef8c4a174 #v5.4.0
+          uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
           with:
             version: '>=0.0.1'
   
         - name: Download coverage data 📥
-          uses: actions/download-artifact@v4
+          uses: actions/download-artifact@v8
           with:
             pattern: coverage-data-*
             merge-multiple: true
@@ -383,7 +383,7 @@
             coverage report --fail-under=80
   
         - name: Upload HTML report if coverage check fails
-          uses: actions/upload-artifact@v4
+          uses: actions/upload-artifact@v7
           with:
               name: html-cov-report
               path: htmlcov
@@ -436,7 +436,7 @@
   
       steps:
         - name: Checkout 🛎️
-          uses: actions/checkout@v4
+          uses: actions/checkout@v6
           with:
             fetch-depth: 0
             persist-credentials: false
@@ -445,7 +445,7 @@
           uses: actions/setup-python@v5
   
         - name: Install uv 🌟
-          uses: astral-sh/setup-uv@22695119d769bdb6f7032ad67b9bca0ef8c4a174 #v5.4.0
+          uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
           with:
             version: ">=0.0.1"
   
@@ -454,7 +454,7 @@
             uv build
   
         - name: Upload distribution packages 📤
-          uses: actions/upload-artifact@v4
+          uses: actions/upload-artifact@v7
           with:
             name: package-distribution
             path: dist/
@@ -474,12 +474,12 @@
   
       steps:
       - name: Download distribution artifacts 📥
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: package-distribution
           path: dist/
       - name: Publish distribution to PyPI 🚀
-        uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc #v1.12.4
+        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b #v1.14.0
   
     github-release:
       name: >-
@@ -495,12 +495,12 @@
   
       steps:
       - name: Download distribution artifacts 📥
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: package-distribution
           path: dist/
       - name: Sign the dists with Sigstore 📝
-        uses: sigstore/gh-action-sigstore-python@f514d46b907ebcd5bedc05145c03b69c1edd8b46 #v3.0.0
+         uses: sigstore/gh-action-sigstore-python@04cffa1d795717b140764e8b640de88853c92acc #v3.3.0
         with:
           inputs: >-
             ./dist/*.tar.gz
@@ -537,12 +537,12 @@
   
       steps:
       - name: Download distribution artifacts 📥
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: package-distribution
           path: dist/
       - name: Publish distribution to test PyPI 🚀
-        uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc #v1.12.4
+        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b #v1.14.0
         with:
           repository-url: https://test.pypi.org/legacy/
   

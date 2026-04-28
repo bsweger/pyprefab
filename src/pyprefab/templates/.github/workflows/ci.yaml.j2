@@ -28,12 +28,12 @@ jobs:
 
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@22695119d769bdb6f7032ad67b9bca0ef8c4a174 #v5.4.0
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
             version: ">=0.0.1"
 
@@ -52,12 +52,12 @@ jobs:
     {% raw %}
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@22695119d769bdb6f7032ad67b9bca0ef8c4a174 #v5.4.0
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
             python-version: ${{ matrix.python-version }}
             version: ">=0.0.1"
@@ -69,7 +69,7 @@ jobs:
             -m pytest
 
       - name: Upload coverage data 📤
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-data-${{ matrix.python-version }}
           path: .coverage.*
@@ -86,17 +86,17 @@ jobs:
 
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@22695119d769bdb6f7032ad67b9bca0ef8c4a174 #v5.4.0
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
           version: '>=0.0.1'
 
       - name: Download coverage data 📥
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: coverage-data-*
           merge-multiple: true
@@ -113,7 +113,7 @@ jobs:
           coverage report --fail-under=80
 
       - name: Upload HTML report if coverage check fails
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
             name: html-cov-report
             path: htmlcov
