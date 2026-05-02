@@ -20,6 +20,7 @@ jobs:
     outputs:
       nox_test_dev_install: ${{ steps.set-matrix.outputs.nox_test_dev_install }}
       nox_test_pypi_install: ${{ steps.set-matrix.outputs.nox_test_pypi_install }}
+      nox_audit_dependencies: ${{ steps.set-matrix.outputs.nox_audit_dependencies }}
 
     steps:
       - name: Checkout 🛎️
@@ -30,7 +31,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Set nox session matrices 🧩
         id: set-matrix
@@ -38,6 +39,7 @@ jobs:
         run: |
           echo nox_test_dev_install=$(uvx nox --session test_dev_install --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
           echo nox_test_pypi_install=$(uvx nox --session test_pypi_install --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
+          echo nox_audit_dependencies=$(uvx nox --session audit --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
 
   # Ensure package is installable from main branch
   test_dev_install:
@@ -58,7 +60,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Run nox test_dev_install session ${{ matrix.nox_test_dev_install }} 🧪
         run: uvx nox --session ${{ matrix.nox_test_dev_install }}
@@ -82,10 +84,34 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Run nox test_pypi_install session ${{ matrix.nox_test_pypi_install }} 🧪
         run: uvx nox --session ${{ matrix.nox_test_pypi_install }}
+
+# Audit dependencies for security vulns
+  audit_dependencies:
+    name: Audit dependencies
+    needs: generate-nox-sessions
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nox_audit_dependencies: ${{ fromJson(needs.generate-nox-sessions.outputs.nox_audit_dependencies) }}
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install uv 🌟
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
+        with:
+          version: "0.11.8"
+
+      - name: Run nox audit session ${{ matrix.nox_audit_dependencies }} 🔎
+        run: uvx nox --session ${{ matrix.nox_audit_dependencies }}
 
   # Test build and deploy to Test PyPI
   test_package_build:
@@ -104,7 +130,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Build package for distribution 🛠️
         run: uv build

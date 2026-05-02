@@ -26,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       nox_tests: ${{ steps.set-matrix.outputs.nox_tests }}
+      nox_audit_dependencies: ${{ steps.set-matrix.outputs.nox_audit_dependencies }}
 
     steps:
       - name: Checkout 🛎️
@@ -36,13 +37,14 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Set nox session matrices 🧩
         id: set-matrix
         shell: bash
         run: |
           echo nox_tests=$(uvx nox --session tests --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
+          echo nox_audit_dependencies=$(uvx nox --session audit --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
 
   lint:
     name: Lint and type check
@@ -57,7 +59,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Lint 🧹
         run: uvx nox --session lint
@@ -78,7 +80,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Generate coverage report 📊
         # The coverage session runs the test suite using the latest stable
@@ -92,6 +94,29 @@ jobs:
             name: html-cov-report
             path: htmlcov
         if: ${{ failure() }}
+
+  audit:
+    name: Audit project dependencies
+    needs: generate-nox-sessions
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nox_audit_dependencies: ${{ fromJson(needs.generate-nox-sessions.outputs.nox_audit_dependencies) }}
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install uv 🌟
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
+        with:
+            version: "0.11.8"
+
+      - name: Run nox audit session ${{ matrix.nox_audit_dependencies }} 🔎
+        run: uvx nox --session ${{ matrix.nox_audit_dependencies }}
 
   tests:
     name: Run tests
@@ -111,7 +136,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Run nox test session ${{ matrix.nox_tests }} 🧪
         run: uvx nox --session ${{ matrix.nox_tests }}
@@ -132,7 +157,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Run nox docs session 📜
         run: uvx nox --session docs
