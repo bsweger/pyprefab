@@ -24,6 +24,13 @@ def typecheck(session: nox.Session) -> None:
 
 
 @nox.session(python=PYTHON_VERSIONS, tags=["checks", "ci"])
+def audit(session: nox.Session) -> None:
+    """Run the linter."""
+    session.install("uv")
+    session.run("uv", "audit")
+
+
+@nox.session(python=PYTHON_VERSIONS, tags=["checks", "ci"])
 def tests(session: nox.Session) -> None:
     """Install dependencies from lockfile and run tests."""
     session.run_install(
