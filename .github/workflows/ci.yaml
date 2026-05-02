@@ -37,7 +37,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Set nox session matrices 🧩
         id: set-matrix
@@ -59,7 +59,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Lint 🧹
         run: uvx nox --session lint
@@ -67,6 +67,46 @@ jobs:
       - name: Type Check 🧐
         run: uvx nox --session typecheck
 
+<<<<<<< HEAD
+||||||| parent of a8dcc25 (Bump project's uv version)
+  audit:
+    name: Audit project dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install uv 🌟
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
+        with:
+            version: "0.9.16"
+
+      - name: Audit dependencies 🔎
+        run: uv audit
+
+=======
+  audit:
+    name: Audit project dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install uv 🌟
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
+        with:
+            version: "0.11.8"
+
+      - name: Audit dependencies 🔎
+        run: uv audit
+
+>>>>>>> a8dcc25 (Bump project's uv version)
   coverage:
     name: Generate coverage reports & fail if below threshold
     runs-on: ubuntu-latest
@@ -80,7 +120,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Generate coverage report 📊
         # The coverage session runs the test suite using the latest stable
@@ -136,7 +176,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Run nox test session ${{ matrix.nox_tests }} 🧪
         run: uvx nox --session ${{ matrix.nox_tests }}
@@ -157,7 +197,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Run nox docs session 📜
         run: uvx nox --session docs

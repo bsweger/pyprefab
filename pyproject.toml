@@ -119,4 +119,5 @@ extend-select = [
 # https://docs.astral.sh/uv/concepts/cache/#dynamic-metadata
 cache-keys = [{ git = { commit = true, tags = true } }]
 exclude-newer = "5 days"
-required-version = ">=0.9.16"
+exclude-newer-package = { uv = false }
+required-version = ">=0.11.8"

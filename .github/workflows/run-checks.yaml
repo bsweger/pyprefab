@@ -31,7 +31,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Set nox session matrices 🧩
         id: set-matrix
@@ -60,7 +60,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Run nox test_dev_install session ${{ matrix.nox_test_dev_install }} 🧪
         run: uvx nox --session ${{ matrix.nox_test_dev_install }}
@@ -84,7 +84,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Run nox test_pypi_install session ${{ matrix.nox_test_pypi_install }} 🧪
         run: uvx nox --session ${{ matrix.nox_test_pypi_install }}
@@ -108,7 +108,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Run nox audit session ${{ matrix.nox_audit_dependencies }} 🔎
         run: uvx nox --session ${{ matrix.nox_audit_dependencies }}
@@ -130,7 +130,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-          version: "0.9.16"
+          version: "0.11.8"
 
       - name: Build package for distribution 🛠️
         run: uv build
