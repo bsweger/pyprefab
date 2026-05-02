@@ -211,7 +211,7 @@ the web version of GitHub doesn't support creating signed tags.
 3. Push the tag upstream:
 
    ```bash
-   git push origin
+   git push origin v0.5.6
    ```
 
 Once the tag is pushed, the `publish-pypi.yaml` workflow will build the package,
