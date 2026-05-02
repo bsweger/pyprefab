@@ -35,7 +35,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-            version: ">=0.0.1"
+            version: "0.11.8"
 
       - name: Lint 🧹
         run: |
@@ -55,7 +55,7 @@ jobs:
       - name: Install uv 🌟
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
-            version: ">=0.0.1"
+            version: "0.11.8"
 
       - name: Audit dependencies 🔎
         run: uv audit
@@ -78,7 +78,7 @@ jobs:
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
         with:
             python-version: ${{ matrix.python-version }}
-            version: ">=0.0.1"
+            version: "0.11.8"
 
       - name: Test with python ${{ matrix.python-version }} 🧪
         run: |

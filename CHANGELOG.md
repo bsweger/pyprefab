@@ -9,7 +9,12 @@ project uses [Semantic Versioning](https://semver.org/).
 
 ### Internal
 
-- Add `uv audit` to daily check workflow
+- Add `uv audit` to ci and daily check workflows
+
+### Changed
+
+- Update github workflow templates to use a pinned uv version
+- Add dependency audit step to the ci github workflow
 
 ## 0.6.1
 
