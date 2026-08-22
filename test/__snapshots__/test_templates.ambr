@@ -23,9 +23,9 @@
   # -- Project information -----------------------------------------------------
   # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
   
+  import datetime
   import os
   import sys
-  from datetime import datetime
   from importlib import metadata
   
   # If extensions (or modules to document with autodoc) are in another directory,
@@ -89,7 +89,7 @@
   master_doc = "index"
   
   # project information
-  now = datetime.now()
+  now = datetime.datetime.now(tz=datetime.UTC)
   project = "transporter_logs"
   _author_name = "Miles O'Brien"
   _description = "An app for parsin' transporter logs"
