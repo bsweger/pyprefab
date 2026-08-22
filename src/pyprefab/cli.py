@@ -82,7 +82,7 @@ def validate_package_dir(value: Path) -> Path:
 def version_callback(value: bool):
     """Return the package version."""
     if value:
-        print(f"pyprefab {__version__}")
+        typer.echo(f"pyprefab {__version__}")
         raise typer.Exit()
 
 

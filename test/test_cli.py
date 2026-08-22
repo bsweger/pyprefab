@@ -5,7 +5,6 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-from click import unstyle
 from typer.testing import CliRunner
 
 import pyprefab
@@ -95,7 +94,7 @@ def test_version_param():
         ["--name", "bad-package-name!", "--version"],
     )
     assert result.exit_code == 0
-    assert unstyle(result.stdout).strip() == f"pyprefab {pyprefab.__version__}"
+    assert result.stdout.strip() == f"pyprefab {pyprefab.__version__}"
 
 
 def test_app_invalid_package_name(tmp_path):
@@ -210,7 +209,10 @@ def test_existing_data_exception_and_no_exception(tmp_path):
 @pytest.mark.parametrize(
     "cli_inputs, expected_author",
     [
-        (["--name", "pytest_package", "--author", "Authorin'' with many 'names 🧐", "--description", "testy"], "Authorin'' with many 'names 🧐"),
+        (
+            ["--name", "pytest_package", "--author", "Authorin'' with many 'names 🧐", "--description", "testy"],
+            "Authorin'' with many 'names 🧐",
+        ),
         (["--name", "pytest_package", "--author", "Author, Name", "--description", "testy"], "Author, Name"),
         (["--name", "pytest_package", "--author", "'", "--description", "testy"], "'"),
         (["--name", "pytest_package", "--author", "''", "--description", "testy"], "''"),
@@ -235,12 +237,17 @@ def test_pyprefab_author_names(tmp_path, cli_inputs, expected_author):
 @pytest.mark.parametrize(
     "cli_inputs, expected_description",
     [
-        (["--name", "pytest_package", "--author", "Worf", "--description", "app for trackin' things"], "app for trackin' things"),
+        (
+            ["--name", "pytest_package", "--author", "Worf", "--description", "app for trackin' things"],
+            "app for trackin' things",
+        ),
         (["--name", "pytest_package", "--author", "Worf", "--description", "''''"], "''''"),
-        (["--name", "pytest_package", "--author", "Worf", "--description", "look ma, usin' an em dash: ⎯"], "look ma, usin' an em dash: ⎯"),
+        (
+            ["--name", "pytest_package", "--author", "Worf", "--description", "look ma, usin' an em dash: ⎯"],
+            "look ma, usin' an em dash: ⎯",
+        ),
     ],
 )
-
 def test_pyprefab_description(tmp_path, cli_inputs, expected_description):
     """Author name should not be auto-escaped in jinja templates."""
     package_name = "pytest_package"
