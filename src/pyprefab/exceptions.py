@@ -29,7 +29,7 @@ class PyprefabBadParameter(typer.BadParameter):
         self.message = style_message(message)
         self.show_color = True
 
-    def show(self, file: t.Optional[t.IO[t.Any]] = None) -> None:
+    def show(self, file: t.IO[t.Any] | None = None) -> None:
         """
         Override show() method in Click exceptions.
 
