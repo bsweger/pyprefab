@@ -11,6 +11,7 @@ project uses [Semantic Versioning](https://semver.org/).
 
 - Add `uv audit` to ci and daily check workflows
 - Remove references to click functions
+- Add a github workflow to update tool versions in pre-commit
 
 ### Changed
 
