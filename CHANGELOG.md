@@ -10,6 +10,7 @@ project uses [Semantic Versioning](https://semver.org/).
 ### Internal
 
 - Add `uv audit` to ci and daily check workflows
+- Remove references to click functions
 
 ### Changed
 

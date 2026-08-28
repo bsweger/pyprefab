@@ -305,8 +305,6 @@
   
         - name: Install uv 🌟
           uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
-          with:
-              version: "0.11.8"
   
         - name: Lint 🧹
           run: |
@@ -325,8 +323,6 @@
   
         - name: Install uv 🌟
           uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
-          with:
-              version: "0.11.8"
   
         - name: Audit dependencies 🔎
           run: uv audit
@@ -349,7 +345,6 @@
           uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
           with:
               python-version: ${{ matrix.python-version }}
-              version: "0.11.8"
   
         - name: Test with python ${{ matrix.python-version }} 🧪
           run: |
@@ -380,8 +375,6 @@
   
         - name: Install uv 🌟
           uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b #v8.1.0
-          with:
-            version: '>=0.0.1'
   
         - name: Download coverage data 📥
           uses: actions/download-artifact@v8
@@ -859,6 +852,7 @@
       }),
       'uv': dict({
         'exclude-newer': '7 days',
+        'required-version': '==0.12.7',
       }),
     }),
   })
@@ -956,6 +950,7 @@
       }),
       'uv': dict({
         'exclude-newer': '7 days',
+        'required-version': '==0.12.7',
       }),
     }),
   })
