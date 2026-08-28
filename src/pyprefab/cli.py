@@ -1,12 +1,12 @@
 """Command-line interface for the pyprefab package."""
 
+import datetime
 import os
 import shutil
 import sys
 import traceback
-from datetime import datetime
 from pathlib import Path
-from typing import Annotated, Optional
+from typing import Annotated
 
 import structlog
 import typer
@@ -20,6 +20,7 @@ from pyprefab import __version__
 from pyprefab.exceptions import PyprefabBadParameter
 
 logger = structlog.get_logger()
+current_working_dir = Path.cwd()
 
 cli_theme = Theme(
     {
@@ -67,13 +68,13 @@ def validate_package_dir(value: Path) -> Path:
     target_dir = Path(os.path.normpath(target_dir_str))
 
     if target_dir.is_file():
-        raise PyprefabBadParameter(f"{str(target_dir)} is a file, not a directory")
+        raise PyprefabBadParameter(f"{target_dir!s} is a file, not a directory")
 
     # Target directory should be empty (with a few exceptions)
     allow_existing = [".git"]
     exceptions = [allow for allow in allow_existing if (target_dir / allow).is_dir()]
     if target_dir.exists() and sum(1 for item in target_dir.iterdir()) - len(exceptions) > 0:
-        raise PyprefabBadParameter(f"{str(target_dir)} is not an empty directory")
+        raise PyprefabBadParameter(f"{target_dir!s} is not an empty directory")
 
     return target_dir
 
@@ -81,7 +82,7 @@ def validate_package_dir(value: Path) -> Path:
 def version_callback(value: bool):
     """Return the package version."""
     if value:
-        print(f"pyprefab {__version__}")
+        typer.echo(f"pyprefab {__version__}")
         raise typer.Exit()
 
 
@@ -121,8 +122,7 @@ def render_templates(context: dict, templates_dir: Path, target_dir: Path):
                 # Render each path component through Jinja
                 logger.debug("rendering jinja template", template=part)
                 rendered_part = path_env.from_string(part).render(**context)
-                if rendered_part.endswith(".j2"):
-                    rendered_part = rendered_part[:-3]
+                rendered_part = rendered_part.removesuffix(".j2")
                 path_parts.append(rendered_part)
 
             # Create destination path preserving structure
@@ -144,7 +144,7 @@ def main(
         ),
     ],
     author: Annotated[
-        Optional[str],
+        str | None,
         typer.Option(
             help="Package author",
             prompt=typer.style("Package author 👤", fg=typer.colors.MAGENTA, bold=True),
@@ -153,7 +153,7 @@ def main(
         ),
     ] = "None",
     description: Annotated[
-        Optional[str],
+        str | None,
         typer.Option(
             help="Package description",
             prompt=typer.style("Package description 📝", fg=typer.colors.MAGENTA, bold=True),
@@ -170,9 +170,9 @@ def main(
             show_default="current directory",
             callback=validate_package_dir,
         ),
-    ] = Path.cwd(),
+    ] = current_working_dir,
     docs: Annotated[
-        Optional[bool],
+        bool | None,
         typer.Option(
             "--docs",
             help="Include Sphinx documentation files",
@@ -180,7 +180,7 @@ def main(
         ),
     ] = False,
     version: Annotated[
-        Optional[bool],
+        bool | None,
         typer.Option("--version", help="Show the version and exit", callback=version_callback, is_eager=True),
     ] = None,
 ):
@@ -196,7 +196,7 @@ def main(
     templates_dir = Path(__file__).parent / "templates"
     target_dir = package_dir
 
-    current_year = datetime.now().year
+    current_year = datetime.datetime.now(tz=datetime.UTC).year
 
     logger.debug("creating package", package=name, directory=str(target_dir))
 
@@ -233,12 +233,12 @@ def main(
         err_console = Console(stderr=True)
         err_console.print(
             Panel.fit(
-                f"⛔️ Error creating package: {str(e)}",
+                f"⛔️ Error creating package: {e!s}",
                 title="pyprefab error",
                 border_style="red",
             )
         )
-        typer.secho(f"Error creating package: {str(e)}", fg=typer.colors.RED)
+        typer.secho(f"Error creating package: {e!s}", fg=typer.colors.RED)
         if target_dir.exists():
             shutil.rmtree(target_dir)
         logger.debug(

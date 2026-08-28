@@ -105,13 +105,16 @@ extend-select = [
     "Q",  # flake8-quotes
     "S",  # flake8-bandit security rules
 ]
+ignore = [
+    "BLE001", # allow blind excepts
+]
 
 [tool.ruff.lint.extend-per-file-ignores]
 "**/test/**/*.py" = [
-    # at least this three should be fine in tests:
-    "S101",  # allow assert in tests
-    "S603",  # subprocess commands in test suite not subject to untrusted input
-    "S607",  # allow subprocess python-based commands in tests
+    # at least these three should be fine in tests:
+    "S101",   # allow assert in tests
+    "S603",   # subprocess commands in test suite not subject to untrusted input
+    "S607",   # allow subprocess python-based commands in tests
 ]
 
 [tool.uv]
