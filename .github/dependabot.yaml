@@ -8,7 +8,7 @@ updates:
     schedule:
       interval: "weekly"
     groups:
-      gha-updates:
+      gha-updates-v2:
         applies-to: version-updates
         patterns:
           - "*"
@@ -22,7 +22,7 @@ updates:
     schedule:
       interval: "weekly"
     groups:
-      py-updates:
+      py-updates-v2:
         applies-to: version-updates
         patterns:
           - "*"
