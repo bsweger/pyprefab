@@ -63,7 +63,7 @@ jobs:
         name: package-distribution
         path: dist/
     - name: Publish distribution to PyPI 🚀
-      uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b #v1.14.0
+      uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 #v1.14.3
 
   github-release:
     name: >-
@@ -84,7 +84,7 @@ jobs:
         name: package-distribution
         path: dist/
     - name: Sign the dists with Sigstore 📝
-      uses: sigstore/gh-action-sigstore-python@04cffa1d795717b140764e8b640de88853c92acc #v3.3.0
+      uses: sigstore/gh-action-sigstore-python@790bc6befb9d733738f18d8f895854b453640ec9 #v3.5.0
       with:
         inputs: >-
           ./dist/*.tar.gz
@@ -125,6 +125,6 @@ jobs:
         name: package-distribution
         path: dist/
     - name: Publish distribution to test PyPI 🚀
-      uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b #v1.14.0
+      uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 #v1.14.3
       with:
         repository-url: https://test.pypi.org/legacy/
