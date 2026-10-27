@@ -7,8 +7,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    cooldown:
-      default-days: 7
     groups:
       gha-updates:
         applies-to: version-updates
@@ -23,8 +21,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    cooldown:
-      default-days: 7
     groups:
       py-updates:
         applies-to: version-updates
