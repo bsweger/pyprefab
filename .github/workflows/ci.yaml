@@ -35,7 +35,7 @@ jobs:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e #v10.3.2
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 #v10.3.3
 
       - name: Set nox session matrices 🧩
         id: set-matrix
@@ -55,7 +55,7 @@ jobs:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e #v10.3.2
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 #v10.3.3
 
       - name: Lint 🧹
         run: uvx nox --session lint
@@ -74,7 +74,7 @@ jobs:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e #v10.3.2
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 #v10.3.3
 
       - name: Generate coverage report 📊
         # The coverage session runs the test suite using the latest stable
@@ -105,7 +105,7 @@ jobs:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e #v10.3.2
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 #v10.3.3
 
       - name: Run nox audit session ${{ matrix.nox_audit_dependencies }} 🔎
         run: uvx nox --session ${{ matrix.nox_audit_dependencies }}
@@ -126,7 +126,7 @@ jobs:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e #v10.3.2
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 #v10.3.3
 
       - name: Run nox test session ${{ matrix.nox_tests }} 🧪
         run: uvx nox --session ${{ matrix.nox_tests }}
@@ -145,7 +145,7 @@ jobs:
           persist-credentials: false
 
       - name: Install uv 🌟
-        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e #v10.3.2
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 #v10.3.3
 
       - name: Run nox docs session 📜
         run: uvx nox --session docs
