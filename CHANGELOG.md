@@ -5,18 +5,22 @@ All notable changes to `pyprefab` are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com), and the
 project uses [Semantic Versioning](https://semver.org/).
 
-## Unpublished
-
-### Internal
-
-- Add `uv audit` to ci and daily check workflows
-- Remove references to click functions
-- Add a github workflow to update tool versions in pre-commit
+## 0.7.0
 
 ### Changed
 
 - Update github workflow templates to use a pinned uv version
 - Add dependency audit step to the ci github workflow
+- Python 3.15 support
+
+### Fixed
+
+- Remove references to click functions
+
+### Internal
+
+- Add `uv audit` to ci and daily check workflows
+- Add a github workflow to update tool versions in pre-commit
 
 ## 0.6.1
 
